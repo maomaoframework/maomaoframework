@@ -22,7 +22,10 @@ package com.maomao.server;
 public class Constants {
 
 	// The remote folder name
-	public static final String ServerName = "mmserver";
+	public static final String ServerName_MMServer = "mmserver";
+	public static final String ServerName_AppServer = "appserver";
+	public static final String ServerName_Singleton = "singleton";
+	
 	public static final String ServerPrefix = "mm";
 	public static final String PK = "com.maomao";
 	public static final String HOME_PROP = "mm.home";
@@ -32,4 +35,6 @@ public class Constants {
 	// SSH default port
 	public static final int SSH_PORT_DEFAULT = 22;
 	public static final String SSH_ACCOUNT_DEFAULT = "root";
+	
+	
 }

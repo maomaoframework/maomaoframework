@@ -11,29 +11,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.maomao.server;
+package com.maomao.framework.support.schedule;
 
-import org.springframework.context.ApplicationContext;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import com.maomao.startup.IServer;
+import org.springframework.stereotype.Component;
 
 /**
- * 服务器接口
+ * Task annotation
+ * 
  * @author maomao
- *
+ * 
  */
-public interface IMMServer extends IServer {
-	
-	/**
-	 * 是否支持管理
-	 * @return
-	 */
-	boolean supportManager();
-	
-	/**
-	 * 取得上下文环境
-	 * 
-	 * @return
-	 */
-	ApplicationContext getApplicationContext();
+@Target({ ElementType.TYPE })
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Component
+public @interface Task {
+
 }

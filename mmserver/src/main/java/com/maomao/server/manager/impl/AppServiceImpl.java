@@ -39,8 +39,8 @@ import com.maomao.framework.utils.ReflectUtils;
 import com.maomao.framework.utils.StringUtils;
 import com.maomao.server.AppInstance;
 import com.maomao.server.AppManager;
-import com.maomao.server.HdpServer;
-import com.maomao.server.IHdpServer;
+import com.maomao.server.MMServer;
+import com.maomao.server.IMMServer;
 import com.maomao.server.Main;
 import com.maomao.server.manager.idl.App;
 import com.maomao.server.manager.idl._AppServiceDisp;
@@ -61,7 +61,7 @@ public class AppServiceImpl extends _AppServiceDisp {
 	 */
 	@Override
 	public void stopServer(Current __current) {
-		IHdpServer server = Main.getServer();
+		IMMServer server = Main.getServer();
 		if (!server.supportManager())
 			return;
 
@@ -100,7 +100,7 @@ public class AppServiceImpl extends _AppServiceDisp {
 
 	@Override
 	public List<App> loadApps(Current __current) {
-		IHdpServer server = Main.getServer();
+		IMMServer server = Main.getServer();
 		if (!server.supportManager())
 			return null;
 
@@ -135,7 +135,7 @@ public class AppServiceImpl extends _AppServiceDisp {
 	 */
 	@Override
 	public String stopAppInstance(String appId, String instanceId, Current __current) {
-		IHdpServer server = Main.getServer();
+		IMMServer server = Main.getServer();
 		if (!server.supportManager())
 			return null;
 
@@ -162,7 +162,7 @@ public class AppServiceImpl extends _AppServiceDisp {
 	 */
 	@Override
 	public String restartAppInstance(String appId, String instanceId, Current __current) {
-		IHdpServer server = Main.getServer();
+		IMMServer server = Main.getServer();
 		if (!server.supportManager())
 			return null;
 
@@ -190,7 +190,7 @@ public class AppServiceImpl extends _AppServiceDisp {
 	 */
 	@Override
 	public String startAppInstance(String appId, String instanceId, Current __current) {
-		IHdpServer server = Main.getServer();
+		IMMServer server = Main.getServer();
 		if (!server.supportManager())
 			return null;
 
@@ -224,18 +224,18 @@ public class AppServiceImpl extends _AppServiceDisp {
 	 */
 	@Override
 	public String removeAppInstance(String appId, String instanceId, Current __current) {
-		IHdpServer server = Main.getServer();
+		IMMServer server = Main.getServer();
 		if (!server.supportManager())
 			return null;
 
-		HdpServer hdpServer = (HdpServer) server;
+		MMServer mmerver = (MMServer) server;
 
 		try {
 			// Stop the instance.
 			stopAppInstance(appId, instanceId, __current);
 
 			// Remove instance configuration.
-			hdpServer.getAppManager().removeAppInstance(appId, instanceId);
+			mmerver.getAppManager().removeAppInstance(appId, instanceId);
 			return null;
 		} catch (Exception e) {
 			return Message.errorMessage(e.getMessage());
@@ -248,19 +248,19 @@ public class AppServiceImpl extends _AppServiceDisp {
 	 * @return
 	 */
 	public String createApp(String appId, Current __current) {
-		IHdpServer server = Main.getServer();
+		IMMServer server = Main.getServer();
 		if (!server.supportManager())
 			return null;
 
-		HdpServer hdpServer = (HdpServer) server;
+		MMServer mmserver = (MMServer) server;
 
 		try {
-			com.maomao.server.App app = hdpServer.getAppManager().getApp(appId);
+			com.maomao.server.App app = mmserver.getAppManager().getApp(appId);
 			if (app != null) {
 				return Message.errorMessage(String.format("The app %s is already exist, cannot re-create the same app.", appId));
 
 			} else {
-				hdpServer.getAppManager().createApp(appId);
+				mmserver.getAppManager().createApp(appId);
 			}
 			return Message.okMessage("App has been created!");
 		} catch (Exception e) {
@@ -274,14 +274,14 @@ public class AppServiceImpl extends _AppServiceDisp {
 	 */
 	@Override
 	public String removeApp(String appId, Current __current) {
-		IHdpServer server = Main.getServer();
+		IMMServer server = Main.getServer();
 		if (!server.supportManager())
 			return null;
 
-		HdpServer hdpServer = (HdpServer) server;
+		MMServer mmserver = (MMServer) server;
 
 		try {
-			com.maomao.server.App app = hdpServer.getAppManager().getApp(appId);
+			com.maomao.server.App app = mmserver.getAppManager().getApp(appId);
 			if (app != null) {
 				List<AppInstance> instances = app.getInstances();
 				if (instances != null && instances.size() > 0) {
@@ -295,7 +295,7 @@ public class AppServiceImpl extends _AppServiceDisp {
 				File appFolder = new File(appsFolder, app.getAppid());
 				FileUtils.removeFile(appFolder);
 
-				hdpServer.getAppManager().removeApp(appId);
+				mmserver.getAppManager().removeApp(appId);
 			}
 			return Message.okMessage("App has been removed!");
 		} catch (Exception e) {
@@ -308,14 +308,14 @@ public class AppServiceImpl extends _AppServiceDisp {
 	 */
 	@Override
 	public String stopApp(String appId, Current __current) {
-		IHdpServer server = Main.getServer();
+		IMMServer server = Main.getServer();
 		if (!server.supportManager())
 			return null;
 
-		HdpServer hdpServer = (HdpServer) server;
+		MMServer mmserver = (MMServer) server;
 
 		try {
-			com.maomao.server.App app = hdpServer.getAppManager().getApp(appId);
+			com.maomao.server.App app = mmserver.getAppManager().getApp(appId);
 			if (app != null) {
 				List<AppInstance> instances = app.getInstances();
 				if (instances != null && instances.size() > 0) {
@@ -335,14 +335,14 @@ public class AppServiceImpl extends _AppServiceDisp {
 	 */
 	@Override
 	public String startApp(String appId, Current __current) {
-		IHdpServer server = Main.getServer();
+		IMMServer server = Main.getServer();
 		if (!server.supportManager())
 			return null;
 
-		HdpServer hdpServer = (HdpServer) server;
+		MMServer mmserver = (MMServer) server;
 
 		try {
-			com.maomao.server.App app = hdpServer.getAppManager().getApp(appId);
+			com.maomao.server.App app = mmserver.getAppManager().getApp(appId);
 			if (app != null) {
 				List<AppInstance> instances = app.getInstances();
 				if (instances != null && instances.size() > 0) {
@@ -365,14 +365,14 @@ public class AppServiceImpl extends _AppServiceDisp {
 	 */
 	@Override
 	public String restartApp(String appId, Current __current) {
-		IHdpServer server = Main.getServer();
+		IMMServer server = Main.getServer();
 		if (!server.supportManager())
 			return null;
 
-		HdpServer hdpServer = (HdpServer) server;
+		MMServer mmserver = (MMServer) server;
 
 		try {
-			com.maomao.server.App app = hdpServer.getAppManager().getApp(appId);
+			com.maomao.server.App app = mmserver.getAppManager().getApp(appId);
 			if (app != null) {
 				List<AppInstance> instances = app.getInstances();
 				if (instances != null && instances.size() > 0) {
@@ -392,14 +392,14 @@ public class AppServiceImpl extends _AppServiceDisp {
 	 */
 	@Override
 	public String createAppInstance(String appId, String appInstanceJson, Current __current) {
-		IHdpServer server = Main.getServer();
+		IMMServer server = Main.getServer();
 		if (!server.supportManager())
 			return null;
 
-		HdpServer hdpServer = (HdpServer) server;
+		MMServer mmserver = (MMServer) server;
 
 		try {
-			com.maomao.server.App app = hdpServer.getAppManager().getApp(appId);
+			com.maomao.server.App app = mmserver.getAppManager().getApp(appId);
 			if (app != null) {
 
 				// change to bean
@@ -408,11 +408,11 @@ public class AppServiceImpl extends _AppServiceDisp {
 				// valid remote instance workingDirectory
 				newInstance.validate();
 					
-				hdpServer.getAppManager().addAppInstance(appId, newInstance);
+				mmserver.getAppManager().addAppInstance(appId, newInstance);
 				
 				if (newInstance.isRemote()) {
 					// If it is a remote instance, then deploy the app.
-					hdpServer.deployRemoteAppInstance(app, newInstance);
+					mmserver.deployRemoteAppInstance(app, newInstance);
 				}
 
 				// If the instance is started ,then start it after reset the
@@ -434,14 +434,14 @@ public class AppServiceImpl extends _AppServiceDisp {
 	 */
 	@Override
 	public String updateAppInstance(String appId, String instanceId, String appInstanceJson, Current __current) {
-		IHdpServer server = Main.getServer();
+		IMMServer server = Main.getServer();
 		if (!server.supportManager())
 			return null;
 
-		HdpServer hdpServer = (HdpServer) server;
+		MMServer mmserver = (MMServer) server;
 
 		try {
-			com.maomao.server.App app = hdpServer.getAppManager().getApp(appId);
+			com.maomao.server.App app = mmserver.getAppManager().getApp(appId);
 			if (app != null) {
 				AppInstance appInstance = app.getInstance(instanceId);
 				if (null != appInstance) {
@@ -459,7 +459,7 @@ public class AppServiceImpl extends _AppServiceDisp {
 						if (isStart)
 							stopAppInstance(appId, appInstance.getIp() + ":" + appInstance.getPort(), __current);
 
-						hdpServer.getAppManager().updateAppInstance(appId, instanceId, newInstance, property);
+						mmserver.getAppManager().updateAppInstance(appId, instanceId, newInstance, property);
 
 						// If the instance is started, just start it after reset
 						// the configuration file.
@@ -475,8 +475,8 @@ public class AppServiceImpl extends _AppServiceDisp {
 	}
 
 	@Override
-	public String getHdpServerInfo(Current __current) {
-		IHdpServer server = Main.getServer();
+	public String getServerInfo(Current __current) {
+		IMMServer server = Main.getServer();
 		if (!server.supportManager())
 			return null;
 
@@ -570,14 +570,14 @@ public class AppServiceImpl extends _AppServiceDisp {
 	 */
 	@Override
 	public String appStopNotify(String appId, String ip, int port, Current __current) {
-		IHdpServer server = Main.getServer();
+		IMMServer server = Main.getServer();
 		if (!server.supportManager())
 			return null;
 
-		HdpServer hdpServer = (HdpServer) server;
+		MMServer mmserver = (MMServer) server;
 
 		try {
-			com.maomao.server.App app = hdpServer.getAppManager().getApp(appId);
+			com.maomao.server.App app = mmserver.getAppManager().getApp(appId);
 			AppInstance instance = app.getInstance(ip, port);
 			if (instance != null) {
 				instance.setRunningStatus(AppInstance.STATUS_STOP);
@@ -593,14 +593,14 @@ public class AppServiceImpl extends _AppServiceDisp {
 	 */
 	@Override
 	public String appStartupNotify(String appId, String ip, int port, Current __current) {
-		IHdpServer server = Main.getServer();
+		IMMServer server = Main.getServer();
 		if (!server.supportManager())
 			return null;
 
-		HdpServer hdpServer = (HdpServer) server;
+		MMServer mmserver = (MMServer) server;
 
 		try {
-			com.maomao.server.App app = hdpServer.getAppManager().getApp(appId);
+			com.maomao.server.App app = mmserver.getAppManager().getApp(appId);
 			AppInstance instance = app.getInstance(ip, port);
 			if (instance != null) {
 				instance.setRunningStatus(AppInstance.STATUS_RUNNING);

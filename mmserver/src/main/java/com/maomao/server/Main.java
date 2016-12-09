@@ -27,23 +27,20 @@ import org.slf4j.LoggerFactory;
 public class Main {
 	static Logger logger = LoggerFactory.getLogger(Main.class);
 
-	public static final String INDEFINER_DPSERVER = "hdpserver";
-	public static final String INDEFINER_APPSERVER = "appserver";
-	public static final String INDEFINER_SINGLETON = "singleton";
 
-	static IHdpServer server;
+	static IMMServer server;
 
-	public static IHdpServer start(String prototype) {
+	public static IMMServer start(String prototype) {
 		if (server != null)
 			return server;
 
-		if (INDEFINER_DPSERVER.equals(prototype)) {
+		if (Constants.ServerName_MMServer.equals(prototype)) {
 			// Start mmserver
-			server = new HdpServer();
-		} else if (INDEFINER_APPSERVER.equals(prototype)) {
+			server = new MMServer();
+		} else if (Constants.ServerName_AppServer.equals(prototype)) {
 			// Start app server
 			server = new AppServer();
-		} else if (INDEFINER_SINGLETON.equals(prototype)) {
+		} else if (Constants.ServerName_Singleton.equals(prototype)) {
 			// Start singleton server
 			server = new SingletonServer();
 		}
@@ -51,7 +48,7 @@ public class Main {
 		return server;
 	}
 
-	public static IHdpServer getServer() {
+	public static IMMServer getServer() {
 		return server;
 	}
 

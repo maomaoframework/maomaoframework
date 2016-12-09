@@ -40,7 +40,7 @@ public class ServerSynchronizer {
 		public void run() {
 			ServerEvent event = ServerEventFacotory.getInstance().getEvent(HeartBeatEvent.class);
 			
-			IHdpServer server = Main.getServer();
+			IMMServer server = Main.getServer();
 			if (server instanceof AppServer) {
 				AppServer appServer = (AppServer) server;
 				
@@ -65,7 +65,7 @@ public class ServerSynchronizer {
 
 		ServerEventRunner er;
 
-		IHdpServer server = Main.getServer();
+		IMMServer server = Main.getServer();
 		if (server instanceof AppServer) {
 			AppServer appServer = (AppServer) server;
 			

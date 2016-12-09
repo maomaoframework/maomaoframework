@@ -42,8 +42,8 @@ import com.maomao.server.util.ProcessManager;
  * @author maomao
  * 
  */
-public class HdpServer implements IHdpServer {
-	static Logger logger = LoggerFactory.getLogger(HdpServer.class);
+public class MMServer implements IMMServer {
+	static Logger logger = LoggerFactory.getLogger(MMServer.class);
 
 	// 保存了服务的长类名
 	ClassLoader appClassLoader;
@@ -95,18 +95,6 @@ public class HdpServer implements IHdpServer {
 				}
 			}
 		}
-
-		// Runtime.getRuntime().addShutdownHook(new Thread() {
-		// public void run() {
-		// try {
-		// logger.error("System will be shutdown ...");
-		// // 关闭所有已经启动的App
-		// HdpServer.this.stop();
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
-		// }
-		// });
 	}
 
 	/**

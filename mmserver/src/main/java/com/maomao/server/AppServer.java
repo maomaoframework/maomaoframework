@@ -34,7 +34,7 @@ import com.maomao.server.support.rpc.RPCServerFactory;
  * @author maomao
  * 
  */
-public class AppServer implements IHdpServer {
+public class AppServer implements IMMServer {
 	private static Logger logger = LoggerFactory.getLogger(AppServer.class);
 
 	// the app port

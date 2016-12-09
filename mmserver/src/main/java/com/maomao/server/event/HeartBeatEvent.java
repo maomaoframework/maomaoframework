@@ -16,7 +16,7 @@ package com.maomao.server.event;
 import com.maomao.framework.support.rpc.ice.IceClient;
 import com.maomao.framework.support.rpc.ice.IceClient.Action;
 import com.maomao.server.AppServer;
-import com.maomao.server.IHdpServer;
+import com.maomao.server.IMMServer;
 import com.maomao.server.Main;
 import com.maomao.server.manager.idl.AppService;
 import com.maomao.server.manager.idl.AppServicePrx;
@@ -30,7 +30,7 @@ public class HeartBeatEvent implements ServerEvent {
 			public void execute(Object prx) {
 				AppServicePrx appServicePrx = (AppServicePrx) prx;
 
-				IHdpServer server = Main.getServer();
+				IMMServer server = Main.getServer();
 				if (server instanceof AppServer) {
 					AppServer appServer = (AppServer) server;
 					appServicePrx.appSyncStatus(appServer.getApp().getAppid(), appServer.getIp(), appServer.getPort());

@@ -11,29 +11,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.maomao.server;
 
-import org.springframework.context.ApplicationContext;
+package com.maomao.server.plugin.schedule;
 
-import com.maomao.startup.IServer;
+import java.util.Map;
+
+import com.maomao.server.Main;
+import com.maomao.server.event.ServerEventAnno;
+
 
 /**
- * 服务器接口
+ * Schedule Plugin
+ * 
  * @author maomao
- *
+ * 
  */
-public interface IMMServer extends IServer {
+public class SchedulePlugin implements IPlugin {
+	Map<String, Object> schedules;
 	
 	/**
-	 * 是否支持管理
-	 * @return
+	 * Call before start.
 	 */
-	boolean supportManager();
-	
+	@Override
+	public void beforeStart() {
+//		schedules = Main.getServer().getApplicationContext().getBeansWithAnnotation(Task.class);
+		
+		// schedules都属于哪个应用的
+	}
+
 	/**
-	 * 取得上下文环境
-	 * 
-	 * @return
+	 * Call 
 	 */
-	ApplicationContext getApplicationContext();
+	@Override
+	public void afterStart() {
+		// TODO Auto-generated method stub
+	}
 }

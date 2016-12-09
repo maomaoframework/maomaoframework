@@ -45,7 +45,7 @@ import com.maomao.startup.Constants;
  * @author maomao
  * 
  */
-public class SingletonServer implements IHdpServer {
+public class SingletonServer implements IMMServer {
 	static Logger logger = LoggerFactory.getLogger(SingletonServer.class);
 
 	ClassLoader appClassLoader;

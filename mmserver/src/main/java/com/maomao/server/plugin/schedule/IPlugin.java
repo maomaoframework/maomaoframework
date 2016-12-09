@@ -11,29 +11,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.maomao.server;
-
-import org.springframework.context.ApplicationContext;
-
-import com.maomao.startup.IServer;
+package com.maomao.server.plugin.schedule;
 
 /**
- * 服务器接口
- * @author maomao
+ * @author huxg
  *
  */
-public interface IMMServer extends IServer {
+public interface IPlugin {
+	/**
+	 * call before start.
+	 */
+	void beforeStart();
 	
 	/**
-	 * 是否支持管理
-	 * @return
+	 * call after start.
 	 */
-	boolean supportManager();
+	void afterStart();
 	
-	/**
-	 * 取得上下文环境
-	 * 
-	 * @return
-	 */
-	ApplicationContext getApplicationContext();
 }

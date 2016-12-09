@@ -73,7 +73,7 @@ public class RemoteInstanceHelper {
 		// and the app.
 		deploy(server, app, instance, false);
 
-		String remoteServerHome = instance.getWorkingDirectory() + File.separatorChar + Constants.ServerName;
+		String remoteServerHome = instance.getWorkingDirectory() + File.separatorChar + Constants.ServerName_MMServer;
 
 		SSHConnection conn = null;
 		try {
@@ -103,7 +103,7 @@ public class RemoteInstanceHelper {
 
 		// Check whether the server files exist on the remote server.
 		String rootFolderPath = instance.getWorkingDirectory();
-		String serverFolderPath = rootFolderPath + "/" + Constants.ServerName;
+		String serverFolderPath = rootFolderPath + "/" + Constants.ServerName_MMServer;
 		String appsFolderPath = serverFolderPath + "/apps";
 		String appFolderPath = appsFolderPath + "/" + app.getAppid();
 		String confFolderPath = serverFolderPath + "/conf";

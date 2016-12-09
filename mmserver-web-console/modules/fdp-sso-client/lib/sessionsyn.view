@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+</body>
+<script>
+  var $ = jQuery = window.parent.jQuery;
+  $(window.parent).trigger('ssosyn');
+</script>
+</html>

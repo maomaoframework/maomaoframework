@@ -1,0 +1,66 @@
+<section id="main" class="column">
+		<article class="module width_3_quarter">
+			<header>
+				<h3 class="tabs_involved" id="tabflag1">组织列表</h3>
+				<div class="operator">
+					<button type="button" id="btnCreate" v-on:click="uploadApp" class="button icon-plus-round">上传应用</button>
+				</div>
+			</header>
+
+			<div class="module_content">
+				<table class="simple-table responsive-table" cellspacing="0" id="tableCompany">
+					<thead>
+						<tr>
+							<th scope="col" width="120"><label>应用</label></th>
+							<th scope="col" width="100"><label>实例</label></th>
+							<th scope="col" width="100"><label>端口</label></th>
+							<th scope="col" width="100"><label>管理</label></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="company in companies">
+							<td>{{company.name}}</td>
+							<td>{{company.regTimeFormat}}</td> 
+							<td>{{company.email}}</td>
+							<td>{{company.contacts}}</td>
+							<td>{{company.phone}}</td>
+							<td class="align-right vertical-center">
+								<button class="button icon-pencil with-tooltip" title="编辑" v-on:click="edit('company.id')"/>
+								<button class="button icon-trash confirm with-tooltip" title="删除" v-on:click="del('company.id')"/>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="7" align="center"><div id="pagesplit" class="pagesplit"></div></td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="emptymsg" style="display:none">暂无应用。</div>
+			</div>
+			</div>
+		</article>
+	</section>
+  <script>
+		$(document).ready(function() {
+			var app = new Vue({
+				el : '#main',
+				data : {
+					apps : []
+				},
+				methods : {
+                    uploadApp : function(){
+                    }
+				},
+				ready : function() {
+					var _self = this;
+					
+					Request.get('/apps/hdp/appmanager/data_applist', null, function(result) {
+						if (result != null && result.length > 0){
+							_self.apps = result;	
+						} else {
+							$(".emptymsg").show();
+						}
+					});
+				}
+			});
+		});
+	</script>

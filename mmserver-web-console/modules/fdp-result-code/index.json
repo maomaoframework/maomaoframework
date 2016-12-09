@@ -1,0 +1,47 @@
+{
+  "ETIMEDOUT": {
+    "code": "4000",
+    "message": "超时",
+    "description": "操作超时"
+  },
+  "FORMAT_PARSE_ERROR": {
+    "code": "4001",
+    "message": "数据格式转换错误",
+    "description": "数据格式转换错误"
+  },
+  "NONE_DATA_SOURCE_ERROR": {
+    "code": "4002",
+    "message": "无可用数据源错误",
+    "description": "获取数据源失败时报告的错误类型。"
+  },
+  "PARAMS_ERROR": {
+    "code": "4003",
+    "message": "参数错误",
+    "description": "当传入的参数有误时，向调用者报告该类型的错误。"
+  },
+  "UNKNOW_ERROR": {
+    "code": "4004",
+    "message": "未知错误",
+    "description": "未知错误"
+  },
+  "EACCES": {
+    "code": "4005",
+    "message": "权限错误",
+    "description": "权限错误"
+  },
+  "ECONNREFUSED": {
+    "code": "4006",
+    "message": "连接服务器失败",
+    "description": "连接服务器失败。"
+  },
+  "ECONNRESET": {
+    "code": "4007",
+    "message": "连接被关闭",
+    "description": "连接被关闭"
+  },
+  "FILE_SYSTEM_ERROR": {
+    "code": "4008",
+    "message": "文件系统错误",
+    "description": "文件系统错误"
+  }
+}

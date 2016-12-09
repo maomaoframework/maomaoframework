@@ -1,0 +1,18 @@
+{
+  "name": "fdp-session",
+  "version": "1.0.0",
+  "description": "根据运行环境，利用express-session和connect-redis实现的第三方session",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "kangys",
+  "license": "ISC",
+  "devDependencies": {
+    "session-file-store": "~0.2.0"
+  },
+  "dependencies": {
+    "connect-redis": "~3.1.0",
+    "express-session": "~1.13.0"
+  }
+}

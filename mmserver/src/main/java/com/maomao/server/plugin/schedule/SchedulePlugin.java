@@ -14,11 +14,26 @@
 
 package com.maomao.server.plugin.schedule;
 
+import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+
+import com.maomao.framework.support.rpc.ice.IceClient;
+import com.maomao.framework.support.rpc.ice.IceClient.Action;
+import com.maomao.framework.support.schedule.MMSchedule;
+import com.maomao.server.AppServer;
+import com.maomao.server.IMMServer;
 import com.maomao.server.Main;
-import com.maomao.server.event.ServerEventAnno;
-
+import com.maomao.server.plugin.IPlugin;
+import com.maomao.server.plugin.schedule.idl.ScheduleService;
+import com.maomao.server.plugin.schedule.idl.ScheduleServicePrx;
 
 /**
  * Schedule Plugin
@@ -27,23 +42,107 @@ import com.maomao.server.event.ServerEventAnno;
  * 
  */
 public class SchedulePlugin implements IPlugin {
-	Map<String, Object> schedules;
+	Logger logger = LoggerFactory.getLogger(SchedulePlugin.class);
 	
+	Map<String, Schedule> schedules = new HashMap<String, Schedule> ();
+
 	/**
 	 * Call before start.
 	 */
 	@Override
 	public void beforeStart() {
-//		schedules = Main.getServer().getApplicationContext().getBeansWithAnnotation(Task.class);
-		
-		// schedules都属于哪个应用的
+		// load all schedule implementation
+		ApplicationContext context = Main.getServer().getApplicationContext();
+		Map<String, Object> components = context.getBeansWithAnnotation(Component.class);
+		Object obj;
+		Class<?> clazz;
+		String serviceName;
+		String cronExpress;
+		for (Entry<String, Object> entry : components.entrySet()) {
+			obj = entry.getValue();
+			clazz = obj.getClass();
+
+			for (Method m : clazz.getDeclaredMethods()) {
+				if (m.isAnnotationPresent(MMSchedule.class)) {
+					// check method
+					try {
+						// add this schedule
+						serviceName = clazz.getName() + ":" + m.getName();
+						cronExpress = m.getAnnotation(MMSchedule.class).cron();
+						
+						if (StringUtils.isEmpty(cronExpress)) {
+							throw new Exception("Cannot find any cron express in your schedule : "  + clazz.getName() + "." + m.getName());
+						}
+						
+						notifyMMServer(serviceName, cronExpress);
+					} catch (Exception e) {
+						logger.error("Error occured when parse the schedule, ignore this error and try continue to start :" , e);
+					}
+				}
+			}
+		}
 	}
 
 	/**
-	 * Call 
+	 * Notify mmserver to load this task
 	 */
-	@Override
-	public void afterStart() {
-		// TODO Auto-generated method stub
+	void notifyMMServer(final String serviceName, final String cronExpress) {
+		final String localIp, serverIp;
+		final int localPort, serverPort;
+		boolean serverSsl;
+
+		IMMServer server = Main.getServer();
+		if (server instanceof AppServer) {
+			AppServer appServer = (AppServer) server;
+			serverIp = appServer.getServerIp();
+			serverPort = appServer.getServerPort();
+			serverSsl = appServer.isServerSsl();
+			localIp = appServer.getIp();
+			localPort = appServer.getPort();
+		} else {
+			localIp = serverIp = server.getServerConfiguration().getRpc().getIp();
+			localPort = serverPort = server.getServerConfiguration().getRpc().getPort();
+			serverSsl = server.getServerConfiguration().getRpc().isSsl();
+		}
+
+		IceClient ic = new IceClient(serverIp, serverPort, serverSsl);
+		ic.invoke(ScheduleService.class, new Action() {
+			@Override
+			public void execute(Object prx) {
+				ScheduleServicePrx servicePrx = (ScheduleServicePrx) prx;
+				servicePrx.registSchedule(makeConnectionUrl(localIp, localPort, false), serviceName, cronExpress);
+			}
+		});
+	}
+
+	String makeConnectionUrl(String localIp, int port, boolean ssl) {
+		return "mm://" + localIp + ":" + port;
+	}
+
+	/**
+	 * add schedule
+	 * 
+	 * @param ip
+	 * @param port
+	 * @param serviceName
+	 */
+	public void addSchedule(String connectionUrl, String serviceName, String cronExpress) throws Exception {
+		// check if there's a same schedule. if so, ignore it.
+		String name = connectionUrl + "/" + serviceName;
+		Schedule schedule = schedules.get(name);
+		if (schedule != null) {
+			throw new Exception("Schedule already exist!");
+		}
+
+		schedule = new Schedule();
+		schedule.setConnectionUrl(connectionUrl);
+		schedule.setServiceName(serviceName);
+		schedule.setCronExpression(cronExpress);
+		schedules.put(name, schedule);
+		QuartzManager.addJob(name, ScheduleJob.class, schedule.getCronExpression());
+	}
+	
+	public Schedule getSchedule(String name){
+		return schedules.get(name);
 	}
 }

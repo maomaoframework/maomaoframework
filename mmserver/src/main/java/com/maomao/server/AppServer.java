@@ -24,7 +24,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.maomao.framework.service.MaoMaoService;
+import com.maomao.server.config.ServerConfiguration;
 import com.maomao.server.event.ServerEventFacotory;
+import com.maomao.server.plugin.PluginFactory;
 import com.maomao.server.support.rpc.IRPCServer;
 import com.maomao.server.support.rpc.RPCServerFactory;
 
@@ -42,7 +44,7 @@ public class AppServer implements IMMServer {
 
 	// the app ip
 	private String ip;
-	
+
 	// the server's ip
 	private String serverIp;
 
@@ -58,11 +60,22 @@ public class AppServer implements IMMServer {
 
 	ApplicationContext applicationContext;
 
+	PluginFactory pluginFactory;
+
+	ServerConfiguration serverConfiguration;
+
 	public AppServer() {
 	}
 
 	@Override
 	public void init() {
+		// loading server configuration
+		File configFile = new File(Main.getServerBaseFolder(), "conf/server.xml");
+		if (!configFile.exists())
+			throw new RuntimeException("Cannot find server.xml!");
+		
+		serverConfiguration = ServerConfiguration.load(configFile);
+
 		appHome = System.getProperty("app.home");
 
 		try {
@@ -83,6 +96,11 @@ public class AppServer implements IMMServer {
 
 			// load spring xml configuration
 			applicationContext = new ClassPathXmlApplicationContext(new String[] { "spring-start-app.xml", "spring-app.xml" });
+
+			// init plugin factory;
+			pluginFactory = new PluginFactory(this);
+			pluginFactory.init();
+
 		} catch (Exception e) {
 			logger.error("Parse app" + appHome + " spring-app.xml error: ", e);
 			e.printStackTrace();
@@ -94,11 +112,14 @@ public class AppServer implements IMMServer {
 	@Override
 	public void start() {
 		try {
+			pluginFactory.beforeStart();
+
 			_start_();
 
 			ServerEventFacotory.getInstance();
 
-			// after startup, synchronize the status between server and app server
+			// after startup, synchronize the status between server and app
+			// server
 			ServerSynchronizer.start();
 			logger.info("--- App " + appHome + " start finish!");
 		} catch (Exception e) {
@@ -204,5 +225,17 @@ public class AppServer implements IMMServer {
 	@Override
 	public boolean supportManager() {
 		return false;
+	}
+
+	public PluginFactory getPluginFactory() {
+		return pluginFactory;
+	}
+
+	public void setPluginFactory(PluginFactory pluginFactory) {
+		this.pluginFactory = pluginFactory;
+	}
+
+	public ServerConfiguration getServerConfiguration() {
+		return serverConfiguration;
 	}
 }

@@ -14,6 +14,8 @@
 package com.maomao.framework.support.rpc.ice;
 
 import java.lang.reflect.Method;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,8 +28,6 @@ import org.slf4j.LoggerFactory;
  */
 public class IceClient {
 	static Logger logger = LoggerFactory.getLogger(IceClient.class);
-	static IceClient isntance;
-
 	boolean ssl;
 	String ip;
 	int port;
@@ -37,9 +37,20 @@ public class IceClient {
 		this.port = port;
 		this.ssl = ssl;
 	}
+	
+	public static IceClient createIceClient(String url) {
+		Pattern hostFinderPattern = Pattern.compile("(\\w+):\\/\\/([^/:]+):(\\d*)?([^# ]*)");
+		final Matcher match = hostFinderPattern.matcher(url);
+
+		IceClient client = null;
+		if (match.find()) {
+			client = new IceClient(match.group(2), Integer.parseInt(match.group(3)), match.group(1).equals("mms"));
+		}
+		return client;
+	}
 
 	/**
-	 * 执行调用
+	 * execute rpc call
 	 * 
 	 * @param serviceClass
 	 * @param action
@@ -65,7 +76,7 @@ public class IceClient {
 			}
 
 		} catch (Exception e) {
-			logger.error(String.format("Exception occur when execute ice service to %s:%d", this.ip, this.port ), e);
+			logger.error(String.format("Exception occur when execute ice service to %s:%d", this.ip, this.port), e);
 		} finally {
 			try {
 				ic.destroy();
@@ -78,11 +89,6 @@ public class IceClient {
 		void execute(Object prx);
 	}
 
-	/**
-	 * 生成连接符号
-	 * 
-	 * @return
-	 */
 	String createConnectionSyntax() {
 		String syntax = " -h " + this.ip + " -p " + this.port;
 		if (this.ssl) {

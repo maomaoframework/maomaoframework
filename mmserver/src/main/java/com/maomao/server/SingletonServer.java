@@ -33,8 +33,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.maomao.framework.configuration.SysConfiguration;
 import com.maomao.framework.service.MaoMaoService;
+import com.maomao.server.config.ServerConfiguration;
+import com.maomao.server.plugin.PluginFactory;
 import com.maomao.server.support.rpc.RPCServerFactory;
 import com.maomao.startup.Constants;
 
@@ -61,10 +62,21 @@ public class SingletonServer implements IMMServer {
 
 	AppManager appManager;
 
+	ServerConfiguration serverConfiguration;
+
+	PluginFactory pluginFactory;
+	
 	@Override
 	public void init() {
+		File configFile = new File(Main.getServerBaseFolder(), "conf/server.xml");
+		serverConfiguration = ServerConfiguration.load(configFile);
+
 		// load spring.xml
 		this.applicationContext = new ClassPathXmlApplicationContext("spring.xml");
+
+		// init plugin factory;
+		pluginFactory = new PluginFactory(this);
+		pluginFactory.init();
 
 		try {
 			appManager = new AppManager();
@@ -84,7 +96,7 @@ public class SingletonServer implements IMMServer {
 			loadAppServices();
 		}
 
-		RPCServerFactory.startDefault(avaliableServices);
+		RPCServerFactory.startDefault(avaliableServices, serverConfiguration.getRpc().getPort());
 		logger.error("Server started!");
 	}
 
@@ -142,7 +154,7 @@ public class SingletonServer implements IMMServer {
 
 		try {
 			cdOrder.countDown();
-			cdAnswer.await(); 
+			cdAnswer.await();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -181,12 +193,12 @@ public class SingletonServer implements IMMServer {
 
 	@Override
 	public int getPort() {
-		return Integer.parseInt(SysConfiguration.getProperty("rpc.port"));
+		return serverConfiguration.getRpc().getPort();
 	}
 
 	@Override
 	public String getIp() {
-		return SysConfiguration.getProperty("rpc.ip");
+		return serverConfiguration.getRpc().getIp();
 	}
 
 	@Override
@@ -239,4 +251,16 @@ public class SingletonServer implements IMMServer {
 		this.appManager = appManager;
 	}
 
+	public PluginFactory getPluginFactory() {
+		return pluginFactory;
+	}
+
+	public void setPluginFactory(PluginFactory pluginFactory) {
+		this.pluginFactory = pluginFactory;
+	}
+
+	public ServerConfiguration getServerConfiguration() {
+		return serverConfiguration;
+	}
+	
 }

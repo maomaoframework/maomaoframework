@@ -22,7 +22,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSONObject;
-import com.maomao.framework.configuration.SysConfiguration;
 import com.maomao.framework.utils.FileUtils;
 import com.maomao.framework.utils.JsonUtils;
 import com.maomao.server.support.ssh.SSHConnection;
@@ -39,7 +38,12 @@ import com.trilead.ssh2.SCPClient;
  */
 public class RemoteInstanceHelper {
 	static Logger logger = LoggerFactory.getLogger(RemoteInstanceHelper.class);
-
+	MMServer mmserver;
+	
+	public RemoteInstanceHelper(MMServer mmserver){
+		this.mmserver = mmserver;
+	}
+	
 	public static boolean testWorkingDirectory(SSHServer server, String workingDirectory) throws Exception {
 		if (null == server)
 			throw new Exception("Cannot find remote ssh server");
@@ -65,7 +69,7 @@ public class RemoteInstanceHelper {
 	 * @param instance
 	 * @throws Exception
 	 */
-	public static void start(SSHServer server, App app, AppInstance instance, boolean forceUpdate) throws Exception {
+	public void start(SSHServer server, App app, AppInstance instance, boolean forceUpdate) throws Exception {
 		if (null == server)
 			throw new Exception("Cannot find remote ssh server");
 
@@ -78,10 +82,11 @@ public class RemoteInstanceHelper {
 		SSHConnection conn = null;
 		try {
 			conn = connectToSsh(server);
-			String serverIp = SysConfiguration.getProperty("rpc.ip");
-			int serverPort = Integer.parseInt(SysConfiguration.getProperty("rpc.port"));
+			String serverIp = mmserver.getIp();
+			int serverPort = mmserver.getPort();
+			
 			String params = "-a " + app.getAppid() + " -p " + instance.getPort() + " -i " + instance.getIp() + " -si=" + serverIp + " -sp=" + serverPort
-					+ " -ssl=" + SysConfiguration.getProperty("rpc.ssl");
+					+ " -ssl=" + instance.ssl;
 			conn.exec("sh " + remoteServerHome + "/bin/" + Constants.ServerPrefix + ".sh startapp " + params, System.out);
 		} finally {
 			if (null != conn) {
@@ -97,7 +102,7 @@ public class RemoteInstanceHelper {
 	 * @param instance
 	 * @throws Exception
 	 */
-	public static void deploy(SSHServer server, App app, AppInstance instance, boolean forceUpdate) throws Exception {
+	public void deploy(SSHServer server, App app, AppInstance instance, boolean forceUpdate) throws Exception {
 		if (null == server)
 			throw new Exception("Cannot find remote ssh server");
 

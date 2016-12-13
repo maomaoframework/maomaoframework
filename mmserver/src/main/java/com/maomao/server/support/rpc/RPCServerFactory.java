@@ -30,7 +30,19 @@ public class RPCServerFactory {
 		return new IceServer();
 	}
 
-	public static void startDefault(Collection<Object> services) {
-		IceServer.startDefault(services);
+	public static void startDefault(Collection<Object> services, int port) {
+		IceServer.startDefault(services, port);
 	}
+
+	public static String makeConnectionUrl(String ip, int port, boolean ssl) {
+		StringBuffer sb = new StringBuffer("mm");
+		if (ssl)
+			sb.append("s");
+		sb.append("://");
+		sb.append(ip);
+		sb.append(":");
+		sb.append(port);
+		return sb.toString();
+	}
+	
 }

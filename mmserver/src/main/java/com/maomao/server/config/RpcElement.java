@@ -11,26 +11,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.maomao.framework.support.schedule;
+package com.maomao.server.config;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import org.springframework.stereotype.Component;
-
-/**
- * Task annotation
- * 
- * @author maomao
- * 
- */
-@Target({ ElementType.TYPE })
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-@Component
-public @interface Task {
-
+public class RpcElement {
+	String ip;
+	int port;
+	boolean ssl;
+	public String getIp() {
+		return ip;
+	}
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+	public int getPort() {
+		return port;
+	}
+	public void setPort(int port) {
+		this.port = port;
+	}
+	public boolean isSsl() {
+		return ssl;
+	}
+	public void setSsl(boolean ssl) {
+		this.ssl = ssl;
+	}
+	
+	
 }

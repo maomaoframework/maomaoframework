@@ -18,7 +18,6 @@ import java.io.FileInputStream;
 import java.lang.reflect.Method;
 import java.util.Properties;
 
-
 import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSONObject;

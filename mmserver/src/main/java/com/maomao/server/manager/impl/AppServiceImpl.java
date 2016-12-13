@@ -30,7 +30,6 @@ import Ice.Current;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.maomao.framework.configuration.SysConfiguration;
 import com.maomao.framework.service.MaoMaoService;
 import com.maomao.framework.utils.FileUtils;
 import com.maomao.framework.utils.JsonUtils;
@@ -39,8 +38,8 @@ import com.maomao.framework.utils.ReflectUtils;
 import com.maomao.framework.utils.StringUtils;
 import com.maomao.server.AppInstance;
 import com.maomao.server.AppManager;
-import com.maomao.server.MMServer;
 import com.maomao.server.IMMServer;
+import com.maomao.server.MMServer;
 import com.maomao.server.Main;
 import com.maomao.server.manager.idl.App;
 import com.maomao.server.manager.idl._AppServiceDisp;
@@ -510,12 +509,16 @@ public class AppServiceImpl extends _AppServiceDisp {
 
 	@Override
 	public String syncServerInfo(Current __current) {
+		IMMServer server = Main.getServer();
+		if (!server.supportManager())
+			return null;
+		
 		try {
-			String serverIp = SysConfiguration.getProperty("hdp.server.ip");
-			if (StringUtils.isEmpty(serverIp)) {
-				serverIp = getRealIpAddress();
+			String ip  = (String) ReflectUtils.invok(server, "getIp", null, null);
+			if (StringUtils.isEmpty(ip)) {
+				ip = getRealIpAddress();
 			}
-			return Message.okMessage(new String[] { "serverIp", "serverHttpPort" }, new String[] { serverIp });
+			return Message.okMessage(new String[] { "serverIp", "serverHttpPort" }, new String[] { ip });
 		} catch (Exception e) {
 		}
 		return Message.error();

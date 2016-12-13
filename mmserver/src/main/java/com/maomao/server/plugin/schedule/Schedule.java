@@ -14,16 +14,40 @@
 package com.maomao.server.plugin.schedule;
 
 /**
- * Schedule Manager
  * @author maomao
- *
+ * 
  */
-public class ScheduleManager {
-	/**
-	 * Init method.
-	 * Load the 
-	 */
-	public void init(){
-		
+public class Schedule {
+	// the client ip
+	private String connectionUrl;
+
+	// the cron expression
+	private String cronExpression;
+
+	private String serviceName;
+
+	public String getConnectionUrl() {
+		return connectionUrl;
 	}
+
+	public void setConnectionUrl(String connectionUrl) {
+		this.connectionUrl = connectionUrl;
+	}
+
+	public String getCronExpression() {
+		return cronExpression;
+	}
+
+	public void setCronExpression(String cronExpression) {
+		this.cronExpression = cronExpression;
+	}
+
+	public String getServiceName() {
+		return serviceName;
+	}
+
+	public void setServiceName(String serviceName) {
+		this.serviceName = serviceName;
+	}
+
 }

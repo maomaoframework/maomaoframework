@@ -17,15 +17,6 @@ package com.maomao.server.plugin.schedule;
  * @author huxg
  *
  */
-public interface IPlugin {
-	/**
-	 * call before start.
-	 */
-	void beforeStart();
-	
-	/**
-	 * call after start.
-	 */
-	void afterStart();
-	
+public class ServerScheduleManager {
+
 }

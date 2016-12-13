@@ -22,14 +22,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.maomao.framework.configuration.SysConfiguration;
 import com.maomao.framework.service.MaoMaoService;
 import com.maomao.framework.support.rpc.ice.IceClient;
 import com.maomao.framework.utils.StringUtils;
+import com.maomao.server.config.ServerConfiguration;
 import com.maomao.server.event.ServerEvent;
 import com.maomao.server.event.ServerEventFacotory;
 import com.maomao.server.event.ServerEventRunner;
 import com.maomao.server.event.ShutdownEvent;
+import com.maomao.server.plugin.PluginFactory;
 import com.maomao.server.support.rpc.IRPCServer;
 import com.maomao.server.support.rpc.RPCServerFactory;
 import com.maomao.server.support.ssh.SSHServer;
@@ -46,22 +47,33 @@ public class MMServer implements IMMServer {
 	static Logger logger = LoggerFactory.getLogger(MMServer.class);
 
 	// 保存了服务的长类名
-	ClassLoader appClassLoader;
-
 	ApplicationContext applicationContext;
-
-	// 服务器配置文件
-	String serverConfig = "conf/server.properties";
 
 	String logConfig = "conf/logging.properties";
 
 	AppManager appManager;
-
+	
+	ServerConfiguration serverConfiguration;
+	
+	RemoteInstanceHelper remoteHelper;
+	
+	PluginFactory pluginFactory;
+	
 	@Override
 	public void init() {
+		// 读取系统配置文件
+		File configFile = new File(Main.getServerBaseFolder(), "conf/server.xml");
+		serverConfiguration = ServerConfiguration.load(configFile);
+		
 		// 加载spring配置文件
 		this.applicationContext = new ClassPathXmlApplicationContext("spring.xml");
-
+		
+		remoteHelper = new RemoteInstanceHelper(this);
+		
+		// init plugin factory;
+		pluginFactory = new PluginFactory(this);
+		pluginFactory.init();
+		
 		try {
 			appManager = new AppManager();
 			appManager.init();
@@ -75,6 +87,8 @@ public class MMServer implements IMMServer {
 	 */
 	@Override
 	public void start() {
+		pluginFactory.beforeStart();
+		
 		// 启动主程序监听
 		// 将所有接口注入到thrift容器中
 		// 取得所有具有接口
@@ -129,7 +143,7 @@ public class MMServer implements IMMServer {
 		// 取得SSH服务器
 		SSHServer server = SSHServerManager.getInstance().getServerById(instance.getSshServer());
 		if (server != null) {
-			RemoteInstanceHelper.start(server, app, instance, false);
+			remoteHelper.start(server, app, instance, false);
 		} else {
 			throw new Exception("Cannot find remote ssh server.");
 		}
@@ -142,7 +156,7 @@ public class MMServer implements IMMServer {
 		// 取得SSH服务器
 		SSHServer server = SSHServerManager.getInstance().getServerById(instance.getSshServer());
 		if (server != null) {
-			RemoteInstanceHelper.deploy(server, app, instance, false);
+			remoteHelper.deploy(server, app, instance, false);
 		} else {
 			throw new Exception("Cannot find remote ssh server.");
 		}
@@ -157,8 +171,8 @@ public class MMServer implements IMMServer {
 	 */
 	public void startLocalAppInstance(App app, AppInstance instance) throws Exception {
 		// 取得应用所在目录
-		String serverIp = SysConfiguration.getProperty("rpc.ip");
-		int serverPort = Integer.parseInt(SysConfiguration.getProperty("rpc.port"));
+		String serverIp = getIp();
+		int serverPort = getPort();
 
 		String appHome = app.getDocBase();
 		String classpath = System.getProperty("java.class.path");
@@ -227,25 +241,21 @@ public class MMServer implements IMMServer {
 
 	@Override
 	public int getPort() {
-		return Integer.parseInt(SysConfiguration.getProperty("rpc.port"));
+		return serverConfiguration.getRpc().getPort();
 	}
 
 	@Override
 	public String getIp() {
-		return SysConfiguration.getProperty("rpc.ip");
+		return serverConfiguration.getRpc().getIp();
+	}
+	
+	public ServerConfiguration getServerConfiguration() {
+		return serverConfiguration;
 	}
 
 	@Override
 	public ApplicationContext getApplicationContext() {
 		return applicationContext;
-	}
-
-	public String getServerConfig() {
-		return serverConfig;
-	}
-
-	public void setServerConfig(String serverConfig) {
-		this.serverConfig = serverConfig;
 	}
 
 	public String getLogConfig() {
@@ -269,19 +279,6 @@ public class MMServer implements IMMServer {
 		return (file);
 	}
 
-	/**
-	 * 取得服务器配置
-	 * 
-	 * @return
-	 */
-	public File getServerConfigFile() {
-		File file = new File(serverConfig);
-		if (!file.isAbsolute()) {
-			file = new File(System.getProperty(Constants.BASE_PROP), serverConfig);
-		}
-		return (file);
-	}
-
 	@Override
 	public boolean supportManager() {
 		return true;
@@ -294,4 +291,14 @@ public class MMServer implements IMMServer {
 	public void setAppManager(AppManager appManager) {
 		this.appManager = appManager;
 	}
+
+	public PluginFactory getPluginFactory() {
+		return pluginFactory;
+	}
+
+	public void setPluginFactory(PluginFactory pluginFactory) {
+		this.pluginFactory = pluginFactory;
+	}
+	
+	
 }

@@ -15,25 +15,43 @@ package com.maomao.server;
 
 import org.springframework.context.ApplicationContext;
 
+import com.maomao.server.config.ServerConfiguration;
+import com.maomao.server.plugin.PluginFactory;
 import com.maomao.startup.IServer;
 
 /**
- * 服务器接口
+ * the server interface
+ * 
  * @author maomao
- *
+ * 
  */
 public interface IMMServer extends IServer {
-	
+
 	/**
-	 * 是否支持管理
+	 * support manager
+	 * 
 	 * @return
 	 */
 	boolean supportManager();
-	
+
 	/**
-	 * 取得上下文环境
+	 * get application context
 	 * 
 	 * @return
 	 */
 	ApplicationContext getApplicationContext();
+
+	/**
+	 * Get plugin factory
+	 * @return
+	 */
+	PluginFactory getPluginFactory();
+	
+	
+	/**
+	 * get Server configurations
+	 * @return
+	 */
+	ServerConfiguration getServerConfiguration();
+	
 }

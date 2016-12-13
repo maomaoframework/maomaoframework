@@ -11,24 +11,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.maomao.server.plugin.schedule;
-
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import org.springframework.stereotype.Component;
+package com.maomao.server.plugin;
 
 /**
  * @author huxg
  *
  */
-@Target({ ElementType.TYPE })
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-@Component
-public @interface Plugin {
-
+public interface IPlugin {
+	/**
+	 * call before start.
+	 */
+	void beforeStart();
 }

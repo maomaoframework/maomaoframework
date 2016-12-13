@@ -18,7 +18,6 @@ import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.maomao.framework.configuration.SysConfiguration;
 import com.maomao.server.support.rpc.IRPCServer;
 
 public class IceServer implements IRPCServer {
@@ -46,15 +45,8 @@ public class IceServer implements IRPCServer {
 		this.services = services;
 	}
 
-	public static void startDefault(Collection<Object> services) {
+	public static void startDefault(Collection<Object> services, int port) {
 		IceServer proxy = new IceServer();
-		int port = DEFAULT_PORT;
-		try {
-			port = Integer.parseInt(SysConfiguration.getProperty("rpc.port"));
-		} catch (Exception e) {
-
-		}
-
 		proxy.setPort(port);
 		proxy.setServices(services);
 		proxy.start();
@@ -67,7 +59,8 @@ public class IceServer implements IRPCServer {
 				try {
 					ic = Ice.Util.initialize();
 					// tcp -h host -p port -t timeout -z --sourceAddress addr
-					// https://doc.zeroc.com/displ	ay/Ice36/Proxy+and+Endpoint+Syntax
+					// https://doc.zeroc.com/displ
+					// ay/Ice36/Proxy+and+Endpoint+Syntax
 					Ice.ObjectAdapter adapter = ic.createObjectAdapterWithEndpoints("hdp", "default -p " + port);
 
 					String serviceName, prefix;
@@ -80,7 +73,7 @@ public class IceServer implements IRPCServer {
 						}
 						prefix = serviceName.substring(0, idx);
 						adapter.add((Ice.Object) service, ic.stringToIdentity(prefix));
-						
+
 						if (logger.isDebugEnabled())
 							logger.debug("Service:" + service.getClass() + " is loaded.");
 					}

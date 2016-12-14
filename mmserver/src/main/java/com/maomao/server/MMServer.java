@@ -19,13 +19,11 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.maomao.framework.service.MaoMaoService;
 import com.maomao.framework.support.rpc.ice.IceClient;
 import com.maomao.framework.utils.StringUtils;
-import com.maomao.server.config.ServerConfiguration;
 import com.maomao.server.event.ServerEvent;
 import com.maomao.server.event.ServerEventFacotory;
 import com.maomao.server.event.ServerEventRunner;
@@ -43,27 +41,16 @@ import com.maomao.server.util.ProcessManager;
  * @author maomao
  * 
  */
-public class MMServer implements IMMServer {
+public class MMServer extends AbstractServer {
 	static Logger logger = LoggerFactory.getLogger(MMServer.class);
-
-	// 保存了服务的长类名
-	ApplicationContext applicationContext;
-
-	String logConfig = "conf/logging.properties";
 
 	AppManager appManager;
 	
-	ServerConfiguration serverConfiguration;
-	
 	RemoteInstanceHelper remoteHelper;
-	
-	PluginFactory pluginFactory;
 	
 	@Override
 	public void init() {
-		// 读取系统配置文件
-		File configFile = new File(Main.getServerBaseFolder(), "conf/server.xml");
-		serverConfiguration = ServerConfiguration.load(configFile);
+		super.init();
 		
 		// 加载spring配置文件
 		this.applicationContext = new ClassPathXmlApplicationContext("spring.xml");
@@ -249,23 +236,6 @@ public class MMServer implements IMMServer {
 		return serverConfiguration.getRpc().getIp();
 	}
 	
-	public ServerConfiguration getServerConfiguration() {
-		return serverConfiguration;
-	}
-
-	@Override
-	public ApplicationContext getApplicationContext() {
-		return applicationContext;
-	}
-
-	public String getLogConfig() {
-		return logConfig;
-	}
-
-	public void setLogConfig(String logConfig) {
-		this.logConfig = logConfig;
-	}
-
 	/**
 	 * 取得日志文件
 	 * 
@@ -291,14 +261,4 @@ public class MMServer implements IMMServer {
 	public void setAppManager(AppManager appManager) {
 		this.appManager = appManager;
 	}
-
-	public PluginFactory getPluginFactory() {
-		return pluginFactory;
-	}
-
-	public void setPluginFactory(PluginFactory pluginFactory) {
-		this.pluginFactory = pluginFactory;
-	}
-	
-	
 }

@@ -14,9 +14,7 @@
 package com.maomao.server.manager.cli;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.lang.reflect.Method;
-import java.util.Properties;
 
 import org.springframework.util.StringUtils;
 
@@ -26,9 +24,11 @@ import com.maomao.framework.support.rpc.ice.IceClient.Action;
 import com.maomao.framework.utils.FileUtils;
 import com.maomao.framework.utils.JsonUtils;
 import com.maomao.framework.utils.Message;
+import com.maomao.server.AbstractServer;
 import com.maomao.server.App;
 import com.maomao.server.AppManager;
 import com.maomao.server.Constants;
+import com.maomao.server.config.ServerConfiguration;
 import com.maomao.server.manager.idl.AppService;
 import com.maomao.server.manager.idl.AppServicePrx;
 import com.maomao.server.manager.idl.SSHServerService;
@@ -44,11 +44,13 @@ import com.maomao.server.util.ZipUtils;
 public class CliHdpManager {
 
 	public static final String formatstr = "[-ic][-id][-is][-im][-ir][-ac][-ad][-ar][-as][-au] \"other params\"";
+	ServerConfiguration serverConfiguration;
+
 	String[] args;
 	CommandLine commandLine;
-	String server_ip;
-	int server_port;
-	boolean server_ssl;
+	// String server_ip;
+	// int server_port;
+	// boolean server_ssl;
 	File baseFolder;
 	File homeFolder;
 	File appsFolder;
@@ -81,7 +83,7 @@ public class CliHdpManager {
 			// load system configuration
 			loadServerConfiguration();
 		} catch (Exception e) {
-			System.out.println("cannot find server.properties file in $HDP_BASE : " + System.getProperty(Constants.BASE_PROP));
+			System.out.println("cannot find server.xml file in $HDP_BASE : " + System.getProperty(Constants.BASE_PROP));
 			System.exit(-2);
 		}
 
@@ -99,7 +101,6 @@ public class CliHdpManager {
 	 * execute option
 	 * 
 	 * @param cmd
-	 * @throws ParseException
 	 */
 	void executeOpt(CommandLine cmd) throws Exception {
 		Method method = this.getClass().getMethod(cmd.result.option.argName, String.class);
@@ -183,13 +184,9 @@ public class CliHdpManager {
 		homeFolder = new File(System.getProperty(Constants.HOME_PROP));
 		appsFolder = new File(homeFolder, "apps");
 
-		File serverProperties = new File(baseFolder, "conf/server.properties");
+		File serverProperties = new File(baseFolder, AbstractServer.serverConfig);
 		if (serverProperties.exists()) {
-			Properties p = new Properties();
-			p.load(new FileInputStream(serverProperties));
-			this.server_ip = p.getProperty("rpc.ip");
-			this.server_port = Integer.parseInt(p.getProperty("rpc.port"));
-			this.server_ssl = Boolean.parseBoolean(p.getProperty("rpc.ssl"));
+			serverConfiguration = ServerConfiguration.load(serverProperties);
 		}
 	}
 
@@ -205,30 +202,29 @@ public class CliHdpManager {
 	/**
 	 * print success
 	 */
-//	void printSuccess() {
-//		System.out.println("Success!");
-//	}
-//
+	// void printSuccess() {
+	// System.out.println("Success!");
+	// }
+	//
 	void printError(String message) {
 		System.out.println("Error: " + message);
 	}
-	
+
 	void printResult(String result) {
 		Message message = JsonUtils.String2Bean(result, Message.class);
 		if (!message.isSuccess() && !StringUtils.isEmpty(message.getMessage())) {
 			printError(message.getMessage());
-		}
-		else if (!message.isSuccess()) {
+		} else if (!message.isSuccess()) {
 			printError("cannot execute command!");
 		} else if (message.isSuccess() && !StringUtils.isEmpty(message.getMessage())) {
 			System.out.println(message.getMessage());
-		} else  {
+		} else {
 			System.out.println("Command execute successfully");
-		} 
+		}
 	}
 
 	/**
-	 * create app instance 
+	 * create app instance
 	 */
 	public void ic(String params) throws Exception {
 		if (StringUtils.isEmpty(params))
@@ -238,7 +234,7 @@ public class CliHdpManager {
 		final String app = jo.getString("app");
 		final JSONObject joInstance = jo.getJSONObject("instance");
 
-		IceClient iceClient = new IceClient(this.server_ip, this.server_port, this.server_ssl);
+		IceClient iceClient = new IceClient(serverConfiguration.getRpc().getIp(), serverConfiguration.getRpc().getPort(), serverConfiguration.getRpc().isSsl());
 		iceClient.invoke(AppService.class, new Action() {
 			@Override
 			public void execute(Object prx) {
@@ -248,9 +244,9 @@ public class CliHdpManager {
 			}
 		});
 	}
-	
+
 	/**
-	 * start app instance 
+	 * start app instance
 	 */
 	public void il(String params) throws Exception {
 		if (StringUtils.isEmpty(params))
@@ -260,7 +256,7 @@ public class CliHdpManager {
 		final String app = jo.getString("app");
 		final String instanceId = jo.getString("instance");
 
-		IceClient iceClient = new IceClient(this.server_ip, this.server_port, this.server_ssl);
+		IceClient iceClient = new IceClient(serverConfiguration.getRpc().getIp(), serverConfiguration.getRpc().getPort(), serverConfiguration.getRpc().isSsl());
 		iceClient.invoke(AppService.class, new Action() {
 			@Override
 			public void execute(Object prx) {
@@ -272,7 +268,7 @@ public class CliHdpManager {
 	}
 
 	/**
-	 * delete instance 
+	 * delete instance
 	 */
 	public void id(String params) throws Exception {
 		if (StringUtils.isEmpty(params))
@@ -287,7 +283,7 @@ public class CliHdpManager {
 		}
 
 		final String p1 = app, p2 = instanceId;
-		IceClient iceClient = new IceClient(this.server_ip, this.server_port, this.server_ssl);
+		IceClient iceClient = new IceClient(serverConfiguration.getRpc().getIp(), serverConfiguration.getRpc().getPort(), serverConfiguration.getRpc().isSsl());
 		iceClient.invoke(AppService.class, new Action() {
 			@Override
 			public void execute(Object prx) {
@@ -314,7 +310,7 @@ public class CliHdpManager {
 		}
 
 		final String p1 = app, p2 = instanceId;
-		IceClient iceClient = new IceClient(this.server_ip, this.server_port, this.server_ssl);
+		IceClient iceClient = new IceClient(serverConfiguration.getRpc().getIp(), serverConfiguration.getRpc().getPort(), serverConfiguration.getRpc().isSsl());
 		iceClient.invoke(AppService.class, new Action() {
 			@Override
 			public void execute(Object prx) {
@@ -341,7 +337,7 @@ public class CliHdpManager {
 		}
 
 		final String p1 = app, p2 = instanceId;
-		IceClient iceClient = new IceClient(this.server_ip, this.server_port, this.server_ssl);
+		IceClient iceClient = new IceClient(serverConfiguration.getRpc().getIp(), serverConfiguration.getRpc().getPort(), serverConfiguration.getRpc().isSsl());
 		iceClient.invoke(AppService.class, new Action() {
 			@Override
 			public void execute(Object prx) {
@@ -364,7 +360,7 @@ public class CliHdpManager {
 		final String instanceId = jo.getString("edit");
 		final JSONObject joInstance = jo.getJSONObject("instance");
 
-		IceClient iceClient = new IceClient(this.server_ip, this.server_port, this.server_ssl);
+		IceClient iceClient = new IceClient(serverConfiguration.getRpc().getIp(), serverConfiguration.getRpc().getPort(), serverConfiguration.getRpc().isSsl());
 		iceClient.invoke(AppService.class, new Action() {
 			@Override
 			public void execute(Object prx) {
@@ -384,7 +380,7 @@ public class CliHdpManager {
 		}
 
 		final String app = params;
-		IceClient iceClient = new IceClient(this.server_ip, this.server_port, this.server_ssl);
+		IceClient iceClient = new IceClient(serverConfiguration.getRpc().getIp(), serverConfiguration.getRpc().getPort(), serverConfiguration.getRpc().isSsl());
 
 		iceClient.invoke(AppService.class, new Action() {
 			@Override
@@ -405,7 +401,7 @@ public class CliHdpManager {
 		}
 
 		final String app = params;
-		IceClient iceClient = new IceClient(this.server_ip, this.server_port, this.server_ssl);
+		IceClient iceClient = new IceClient(serverConfiguration.getRpc().getIp(), serverConfiguration.getRpc().getPort(), serverConfiguration.getRpc().isSsl());
 		iceClient.invoke(AppService.class, new Action() {
 			@Override
 			public void execute(Object prx) {
@@ -425,7 +421,7 @@ public class CliHdpManager {
 		}
 
 		final String app = params;
-		IceClient iceClient = new IceClient(this.server_ip, this.server_port, this.server_ssl);
+		IceClient iceClient = new IceClient(serverConfiguration.getRpc().getIp(), serverConfiguration.getRpc().getPort(), serverConfiguration.getRpc().isSsl());
 		iceClient.invoke(AppService.class, new Action() {
 			@Override
 			public void execute(Object prx) {
@@ -445,7 +441,7 @@ public class CliHdpManager {
 		}
 
 		final String app = params;
-		IceClient iceClient = new IceClient(this.server_ip, this.server_port, this.server_ssl);
+		IceClient iceClient = new IceClient(serverConfiguration.getRpc().getIp(), serverConfiguration.getRpc().getPort(), serverConfiguration.getRpc().isSsl());
 		iceClient.invoke(AppService.class, new Action() {
 			@Override
 			public void execute(Object prx) {
@@ -483,9 +479,9 @@ public class CliHdpManager {
 		} else if (file.isDirectory()) {
 			FileUtils.copyFiles2(file.getCanonicalPath(), appFolder.getCanonicalPath());
 		}
-		
+
 		// create an app in server
-		IceClient iceClient = new IceClient(this.server_ip, this.server_port, this.server_ssl);
+		IceClient iceClient = new IceClient(serverConfiguration.getRpc().getIp(), serverConfiguration.getRpc().getPort(), serverConfiguration.getRpc().isSsl());
 		iceClient.invoke(AppService.class, new Action() {
 			@Override
 			public void execute(Object prx) {
@@ -506,7 +502,7 @@ public class CliHdpManager {
 		}
 
 		final String serverJson = params;
-		IceClient iceClient = new IceClient(this.server_ip, this.server_port, this.server_ssl);
+		IceClient iceClient = new IceClient(serverConfiguration.getRpc().getIp(), serverConfiguration.getRpc().getPort(), serverConfiguration.getRpc().isSsl());
 		iceClient.invoke(SSHServerService.class, new Action() {
 			@Override
 			public void execute(Object prx) {
@@ -526,7 +522,7 @@ public class CliHdpManager {
 		}
 
 		final String key = params;
-		IceClient iceClient = new IceClient(this.server_ip, this.server_port, this.server_ssl);
+		IceClient iceClient = new IceClient(serverConfiguration.getRpc().getIp(), serverConfiguration.getRpc().getPort(), serverConfiguration.getRpc().isSsl());
 		iceClient.invoke(SSHServerService.class, new Action() {
 			@Override
 			public void execute(Object prx) {
@@ -549,7 +545,7 @@ public class CliHdpManager {
 		if (StringUtils.isEmpty(jo.getString("key")))
 			throw new Exception("Must provide key property in json");
 
-		IceClient iceClient = new IceClient(this.server_ip, this.server_port, this.server_ssl);
+		IceClient iceClient = new IceClient(serverConfiguration.getRpc().getIp(), serverConfiguration.getRpc().getPort(), serverConfiguration.getRpc().isSsl());
 		iceClient.invoke(SSHServerService.class, new Action() {
 			@Override
 			public void execute(Object prx) {
@@ -566,7 +562,7 @@ public class CliHdpManager {
 	 * @throws Excpetion
 	 */
 	public void stop(String params) throws Exception {
-		IceClient iceClient = new IceClient(this.server_ip, this.server_port, this.server_ssl);
+		IceClient iceClient = new IceClient(serverConfiguration.getRpc().getIp(), serverConfiguration.getRpc().getPort(), serverConfiguration.getRpc().isSsl());
 		iceClient.invoke(AppService.class, new Action() {
 			@Override
 			public void execute(Object prx) {

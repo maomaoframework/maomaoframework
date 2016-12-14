@@ -26,6 +26,7 @@ import com.thoughtworks.xstream.XStream;
 public class ServerConfiguration {
 	RpcElement rpc;
 	List<PluginElement> plugins;
+	ThreadPoolExecutorElement taskPool;
 
 	public static ServerConfiguration load(File configFile) {
 		ServerConfiguration config = null;
@@ -35,6 +36,7 @@ public class ServerConfiguration {
 			x.alias("rpc", RpcElement.class);
 			x.alias("plugins", ArrayList.class);
 			x.alias("plugin", PluginElement.class);
+			x.alias("task-pool", ThreadPoolExecutorElement.class);
 			config = (ServerConfiguration) x.fromXML(configFile);
 		}
 		return config;
@@ -55,6 +57,13 @@ public class ServerConfiguration {
 	public void setPlugins(List<PluginElement> plugins) {
 		this.plugins = plugins;
 	}
-	
-	
+
+	public ThreadPoolExecutorElement getTaskPool() {
+		return taskPool;
+	}
+
+	public void setTaskPool(ThreadPoolExecutorElement taskPool) {
+		this.taskPool = taskPool;
+	}
+
 }

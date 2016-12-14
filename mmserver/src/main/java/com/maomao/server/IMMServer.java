@@ -14,6 +14,7 @@
 package com.maomao.server;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import com.maomao.server.config.ServerConfiguration;
 import com.maomao.server.plugin.PluginFactory;
@@ -53,5 +54,11 @@ public interface IMMServer extends IServer {
 	 * @return
 	 */
 	ServerConfiguration getServerConfiguration();
+	
+	/**
+	 * Get thread pool executor
+	 * @return
+	 */
+	ThreadPoolTaskExecutor getThreadPoolTaskExecutor();
 	
 }

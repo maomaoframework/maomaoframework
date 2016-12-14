@@ -34,7 +34,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.maomao.framework.service.MaoMaoService;
-import com.maomao.server.config.ServerConfiguration;
 import com.maomao.server.plugin.PluginFactory;
 import com.maomao.server.support.rpc.RPCServerFactory;
 import com.maomao.startup.Constants;
@@ -46,12 +45,11 @@ import com.maomao.startup.Constants;
  * @author maomao
  * 
  */
-public class SingletonServer implements IMMServer {
+public class SingletonServer extends AbstractServer {
 	static Logger logger = LoggerFactory.getLogger(SingletonServer.class);
 
 	ClassLoader appClassLoader;
 
-	ApplicationContext applicationContext;
 	String serverConfig = "conf/server.properties";
 
 	String logConfig = "conf/logging.properties";
@@ -62,15 +60,11 @@ public class SingletonServer implements IMMServer {
 
 	AppManager appManager;
 
-	ServerConfiguration serverConfiguration;
-
-	PluginFactory pluginFactory;
 	
 	@Override
 	public void init() {
-		File configFile = new File(Main.getServerBaseFolder(), "conf/server.xml");
-		serverConfiguration = ServerConfiguration.load(configFile);
-
+		super.init();
+		
 		// load spring.xml
 		this.applicationContext = new ClassPathXmlApplicationContext("spring.xml");
 
@@ -201,10 +195,6 @@ public class SingletonServer implements IMMServer {
 		return serverConfiguration.getRpc().getIp();
 	}
 
-	@Override
-	public ApplicationContext getApplicationContext() {
-		return applicationContext;
-	}
 
 	public String getServerConfig() {
 		return serverConfig;
@@ -251,16 +241,4 @@ public class SingletonServer implements IMMServer {
 		this.appManager = appManager;
 	}
 
-	public PluginFactory getPluginFactory() {
-		return pluginFactory;
-	}
-
-	public void setPluginFactory(PluginFactory pluginFactory) {
-		this.pluginFactory = pluginFactory;
-	}
-
-	public ServerConfiguration getServerConfiguration() {
-		return serverConfiguration;
-	}
-	
 }

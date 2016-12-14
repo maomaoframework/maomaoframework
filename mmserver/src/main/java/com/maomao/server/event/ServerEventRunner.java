@@ -15,10 +15,10 @@ package com.maomao.server.event;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import com.maomao.framework.support.rpc.ice.IceClient;
-import com.maomao.framework.utils.SpringUtils;
+import com.maomao.server.IMMServer;
+import com.maomao.server.Main;
 
 /**
  * Server event Runner
@@ -40,8 +40,9 @@ public class ServerEventRunner {
 	 * execute event
 	 */
 	public void post() {
-		ThreadPoolTaskExecutor threadPool = (ThreadPoolTaskExecutor) SpringUtils.getBean("taskExecutor");
-		threadPool.execute(new Runnable() {
+		IMMServer server = Main.getServer();
+		
+		server.getThreadPoolTaskExecutor().execute(new Runnable() {
 			@Override
 			public void run() {
 				try {

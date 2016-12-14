@@ -20,11 +20,9 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.maomao.framework.service.MaoMaoService;
-import com.maomao.server.config.ServerConfiguration;
 import com.maomao.server.event.ServerEventFacotory;
 import com.maomao.server.plugin.PluginFactory;
 import com.maomao.server.support.rpc.IRPCServer;
@@ -36,7 +34,7 @@ import com.maomao.server.support.rpc.RPCServerFactory;
  * @author maomao
  * 
  */
-public class AppServer implements IMMServer {
+public class AppServer extends AbstractServer {
 	private static Logger logger = LoggerFactory.getLogger(AppServer.class);
 
 	// the app port
@@ -58,11 +56,6 @@ public class AppServer implements IMMServer {
 
 	String appHome;
 
-	ApplicationContext applicationContext;
-
-	PluginFactory pluginFactory;
-
-	ServerConfiguration serverConfiguration;
 
 	public AppServer() {
 	}
@@ -70,12 +63,8 @@ public class AppServer implements IMMServer {
 	@Override
 	public void init() {
 		// loading server configuration
-		File configFile = new File(Main.getServerBaseFolder(), "conf/server.xml");
-		if (!configFile.exists())
-			throw new RuntimeException("Cannot find server.xml!");
+		super.init();
 		
-		serverConfiguration = ServerConfiguration.load(configFile);
-
 		appHome = System.getProperty("app.home");
 
 		try {
@@ -206,14 +195,6 @@ public class AppServer implements IMMServer {
 		this.appHome = appHome;
 	}
 
-	public ApplicationContext getApplicationContext() {
-		return applicationContext;
-	}
-
-	public void setApplicationContext(ApplicationContext applicationContext) {
-		this.applicationContext = applicationContext;
-	}
-
 	public boolean isServerSsl() {
 		return serverSsl;
 	}
@@ -227,15 +208,4 @@ public class AppServer implements IMMServer {
 		return false;
 	}
 
-	public PluginFactory getPluginFactory() {
-		return pluginFactory;
-	}
-
-	public void setPluginFactory(PluginFactory pluginFactory) {
-		this.pluginFactory = pluginFactory;
-	}
-
-	public ServerConfiguration getServerConfiguration() {
-		return serverConfiguration;
-	}
 }

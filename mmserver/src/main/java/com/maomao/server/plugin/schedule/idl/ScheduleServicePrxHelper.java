@@ -200,95 +200,100 @@ public final class ScheduleServicePrxHelper extends Ice.ObjectPrxHelperBase impl
 
     private static final String __registSchedule_name = "registSchedule";
 
-    public String registSchedule(String connectionUrl, String serviceName, String cronExpress)
+    public String registSchedule(String connectionUrl, String serviceName, String cronExpress, boolean imediate)
     {
-        return registSchedule(connectionUrl, serviceName, cronExpress, null, false);
+        return registSchedule(connectionUrl, serviceName, cronExpress, imediate, null, false);
     }
 
-    public String registSchedule(String connectionUrl, String serviceName, String cronExpress, java.util.Map<String, String> __ctx)
+    public String registSchedule(String connectionUrl, String serviceName, String cronExpress, boolean imediate, java.util.Map<String, String> __ctx)
     {
-        return registSchedule(connectionUrl, serviceName, cronExpress, __ctx, true);
+        return registSchedule(connectionUrl, serviceName, cronExpress, imediate, __ctx, true);
     }
 
-    private String registSchedule(String connectionUrl, String serviceName, String cronExpress, java.util.Map<String, String> __ctx, boolean __explicitCtx)
+    private String registSchedule(String connectionUrl, String serviceName, String cronExpress, boolean imediate, java.util.Map<String, String> __ctx, boolean __explicitCtx)
     {
         __checkTwowayOnly(__registSchedule_name);
-        return end_registSchedule(begin_registSchedule(connectionUrl, serviceName, cronExpress, __ctx, __explicitCtx, true, null));
+        return end_registSchedule(begin_registSchedule(connectionUrl, serviceName, cronExpress, imediate, __ctx, __explicitCtx, true, null));
     }
 
-    public Ice.AsyncResult begin_registSchedule(String connectionUrl, String serviceName, String cronExpress)
+    public Ice.AsyncResult begin_registSchedule(String connectionUrl, String serviceName, String cronExpress, boolean imediate)
     {
-        return begin_registSchedule(connectionUrl, serviceName, cronExpress, null, false, false, null);
+        return begin_registSchedule(connectionUrl, serviceName, cronExpress, imediate, null, false, false, null);
     }
 
-    public Ice.AsyncResult begin_registSchedule(String connectionUrl, String serviceName, String cronExpress, java.util.Map<String, String> __ctx)
+    public Ice.AsyncResult begin_registSchedule(String connectionUrl, String serviceName, String cronExpress, boolean imediate, java.util.Map<String, String> __ctx)
     {
-        return begin_registSchedule(connectionUrl, serviceName, cronExpress, __ctx, true, false, null);
+        return begin_registSchedule(connectionUrl, serviceName, cronExpress, imediate, __ctx, true, false, null);
     }
 
-    public Ice.AsyncResult begin_registSchedule(String connectionUrl, String serviceName, String cronExpress, Ice.Callback __cb)
+    public Ice.AsyncResult begin_registSchedule(String connectionUrl, String serviceName, String cronExpress, boolean imediate, Ice.Callback __cb)
     {
-        return begin_registSchedule(connectionUrl, serviceName, cronExpress, null, false, false, __cb);
+        return begin_registSchedule(connectionUrl, serviceName, cronExpress, imediate, null, false, false, __cb);
     }
 
-    public Ice.AsyncResult begin_registSchedule(String connectionUrl, String serviceName, String cronExpress, java.util.Map<String, String> __ctx, Ice.Callback __cb)
+    public Ice.AsyncResult begin_registSchedule(String connectionUrl, String serviceName, String cronExpress, boolean imediate, java.util.Map<String, String> __ctx, Ice.Callback __cb)
     {
-        return begin_registSchedule(connectionUrl, serviceName, cronExpress, __ctx, true, false, __cb);
+        return begin_registSchedule(connectionUrl, serviceName, cronExpress, imediate, __ctx, true, false, __cb);
     }
 
-    public Ice.AsyncResult begin_registSchedule(String connectionUrl, String serviceName, String cronExpress, Callback_ScheduleService_registSchedule __cb)
+    public Ice.AsyncResult begin_registSchedule(String connectionUrl, String serviceName, String cronExpress, boolean imediate, Callback_ScheduleService_registSchedule __cb)
     {
-        return begin_registSchedule(connectionUrl, serviceName, cronExpress, null, false, false, __cb);
+        return begin_registSchedule(connectionUrl, serviceName, cronExpress, imediate, null, false, false, __cb);
     }
 
-    public Ice.AsyncResult begin_registSchedule(String connectionUrl, String serviceName, String cronExpress, java.util.Map<String, String> __ctx, Callback_ScheduleService_registSchedule __cb)
+    public Ice.AsyncResult begin_registSchedule(String connectionUrl, String serviceName, String cronExpress, boolean imediate, java.util.Map<String, String> __ctx, Callback_ScheduleService_registSchedule __cb)
     {
-        return begin_registSchedule(connectionUrl, serviceName, cronExpress, __ctx, true, false, __cb);
+        return begin_registSchedule(connectionUrl, serviceName, cronExpress, imediate, __ctx, true, false, __cb);
     }
 
     public Ice.AsyncResult begin_registSchedule(String connectionUrl, 
                                                 String serviceName, 
                                                 String cronExpress, 
+                                                boolean imediate, 
                                                 IceInternal.Functional_GenericCallback1<String> __responseCb, 
                                                 IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb)
     {
-        return begin_registSchedule(connectionUrl, serviceName, cronExpress, null, false, false, __responseCb, __exceptionCb, null);
+        return begin_registSchedule(connectionUrl, serviceName, cronExpress, imediate, null, false, false, __responseCb, __exceptionCb, null);
     }
 
     public Ice.AsyncResult begin_registSchedule(String connectionUrl, 
                                                 String serviceName, 
                                                 String cronExpress, 
+                                                boolean imediate, 
                                                 IceInternal.Functional_GenericCallback1<String> __responseCb, 
                                                 IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb, 
                                                 IceInternal.Functional_BoolCallback __sentCb)
     {
-        return begin_registSchedule(connectionUrl, serviceName, cronExpress, null, false, false, __responseCb, __exceptionCb, __sentCb);
+        return begin_registSchedule(connectionUrl, serviceName, cronExpress, imediate, null, false, false, __responseCb, __exceptionCb, __sentCb);
     }
 
     public Ice.AsyncResult begin_registSchedule(String connectionUrl, 
                                                 String serviceName, 
                                                 String cronExpress, 
+                                                boolean imediate, 
                                                 java.util.Map<String, String> __ctx, 
                                                 IceInternal.Functional_GenericCallback1<String> __responseCb, 
                                                 IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb)
     {
-        return begin_registSchedule(connectionUrl, serviceName, cronExpress, __ctx, true, false, __responseCb, __exceptionCb, null);
+        return begin_registSchedule(connectionUrl, serviceName, cronExpress, imediate, __ctx, true, false, __responseCb, __exceptionCb, null);
     }
 
     public Ice.AsyncResult begin_registSchedule(String connectionUrl, 
                                                 String serviceName, 
                                                 String cronExpress, 
+                                                boolean imediate, 
                                                 java.util.Map<String, String> __ctx, 
                                                 IceInternal.Functional_GenericCallback1<String> __responseCb, 
                                                 IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb, 
                                                 IceInternal.Functional_BoolCallback __sentCb)
     {
-        return begin_registSchedule(connectionUrl, serviceName, cronExpress, __ctx, true, false, __responseCb, __exceptionCb, __sentCb);
+        return begin_registSchedule(connectionUrl, serviceName, cronExpress, imediate, __ctx, true, false, __responseCb, __exceptionCb, __sentCb);
     }
 
     private Ice.AsyncResult begin_registSchedule(String connectionUrl, 
                                                  String serviceName, 
                                                  String cronExpress, 
+                                                 boolean imediate, 
                                                  java.util.Map<String, String> __ctx, 
                                                  boolean __explicitCtx, 
                                                  boolean __synchronous, 
@@ -296,7 +301,7 @@ public final class ScheduleServicePrxHelper extends Ice.ObjectPrxHelperBase impl
                                                  IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb, 
                                                  IceInternal.Functional_BoolCallback __sentCb)
     {
-        return begin_registSchedule(connectionUrl, serviceName, cronExpress, __ctx, __explicitCtx, __synchronous, 
+        return begin_registSchedule(connectionUrl, serviceName, cronExpress, imediate, __ctx, __explicitCtx, __synchronous, 
                                     new IceInternal.Functional_TwowayCallbackArg1<String>(__responseCb, __exceptionCb, __sentCb)
                                         {
                                             public final void __completed(Ice.AsyncResult __result)
@@ -309,6 +314,7 @@ public final class ScheduleServicePrxHelper extends Ice.ObjectPrxHelperBase impl
     private Ice.AsyncResult begin_registSchedule(String connectionUrl, 
                                                  String serviceName, 
                                                  String cronExpress, 
+                                                 boolean imediate, 
                                                  java.util.Map<String, String> __ctx, 
                                                  boolean __explicitCtx, 
                                                  boolean __synchronous, 
@@ -323,6 +329,7 @@ public final class ScheduleServicePrxHelper extends Ice.ObjectPrxHelperBase impl
             __os.writeString(connectionUrl);
             __os.writeString(serviceName);
             __os.writeString(cronExpress);
+            __os.writeBool(imediate);
             __result.endWriteParams();
             __result.invoke();
         }

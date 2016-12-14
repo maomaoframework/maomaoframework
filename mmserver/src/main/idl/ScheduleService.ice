@@ -4,7 +4,7 @@ module idl {
 		/**
 		 * add a schedule to schedule center
 		 */
-	    string registSchedule(string connectionUrl , string serviceName, string cronExpress);
+	    string registSchedule(string connectionUrl , string serviceName, string cronExpress, bool imediate);
 	    
 	    /**
 	     * execute schedule

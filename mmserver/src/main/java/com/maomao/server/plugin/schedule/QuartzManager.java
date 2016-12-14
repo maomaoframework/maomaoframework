@@ -13,16 +13,18 @@
  */
 package com.maomao.server.plugin.schedule;
 
-import java.text.ParseException;
-
-import org.quartz.CronTrigger;
+import org.quartz.CronScheduleBuilder;
 import org.quartz.Job;
+import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
+import org.quartz.JobKey;
 import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
 import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Quartz manager
@@ -30,63 +32,45 @@ import org.quartz.impl.StdSchedulerFactory;
  * @author maomao
  */
 public class QuartzManager {
-	private static SchedulerFactory sf = new StdSchedulerFactory();
-	private static String JOB_GROUP_NAME = "group1";
-	private static String TRIGGER_GROUP_NAME = "trigger1";
+	private static QuartzManager instance;
+	private static Logger logger = LoggerFactory.getLogger(QuartzManager.class);
+	private static SchedulerFactory sf;
+	private static String JOB_GROUP_NAME = "mmjob";
+	private static String TRIGGER_GROUP_NAME = "mmtrigger";
 
-	public static void addJob(String jobName, Class<?> clazz, String time) throws SchedulerException, ParseException {
-		Scheduler sched = sf.getScheduler();
-		JobDetail jobDetail = new JobDetail(jobName, JOB_GROUP_NAME, clazz);
-		CronTrigger trigger = new CronTrigger(jobName, TRIGGER_GROUP_NAME);
-		trigger.setCronExpression(time);
-		sched.scheduleJob(jobDetail, trigger);
-
-		if (!sched.isShutdown())
-			sched.start();
+	private QuartzManager() {
+		sf = new StdSchedulerFactory();
 	}
 
-	public static void addJob(String jobName, String jobGroupName, String triggerName, String triggerGroupName, Job job, String time)
-			throws SchedulerException, ParseException {
-		Scheduler sched = sf.getScheduler();
-		JobDetail jobDetail = new JobDetail(jobName, jobGroupName, job.getClass());
-		CronTrigger trigger = new CronTrigger(triggerName, triggerGroupName);
-		trigger.setCronExpression(time);
-		sched.scheduleJob(jobDetail, trigger);
-		if (!sched.isShutdown())
-			sched.start();
+	public static QuartzManager getInstance() {
+		if (null == instance)
+			instance = new QuartzManager();
+		return instance;
 	}
 
-	public static void modifyJobTime(String jobName, String time) throws SchedulerException, ParseException {
-		Scheduler sched = sf.getScheduler();
-		Trigger trigger = sched.getTrigger(jobName, TRIGGER_GROUP_NAME);
-		if (trigger != null) {
-			CronTrigger ct = (CronTrigger) trigger;
-			ct.setCronExpression(time);
-			sched.resumeTrigger(jobName, TRIGGER_GROUP_NAME);
-		}
-	}
+	public void addJob(final String jobName, final Class<? extends Job> clazz, final String time, final boolean startImmediate) {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				// start work after 30 seconds.
+				try {
+					Thread.sleep(30 * 1000);
+					JobKey jobKey = JobKey.jobKey(jobName, JOB_GROUP_NAME);
+					JobDetail job = JobBuilder.newJob(clazz).withIdentity(jobKey).storeDurably().build();
 
-	public static void modifyJobTime(String triggerName, String triggerGroupName, String time) throws SchedulerException, ParseException {
-		Scheduler sched = sf.getScheduler();
-		Trigger trigger = sched.getTrigger(triggerName, triggerGroupName);
-		if (trigger != null) {
-			CronTrigger ct = (CronTrigger) trigger;
-			ct.setCronExpression(time);
-			sched.resumeTrigger(triggerName, triggerGroupName);
-		}
-	}
+					Trigger trigger = TriggerBuilder.newTrigger().withIdentity(jobName, TRIGGER_GROUP_NAME).withSchedule(CronScheduleBuilder.cronSchedule(time))
+							.build();
 
-	public static void removeJob(String jobName) throws SchedulerException {
-		Scheduler sched = sf.getScheduler();
-		sched.pauseTrigger(jobName, TRIGGER_GROUP_NAME);
-		sched.unscheduleJob(jobName, TRIGGER_GROUP_NAME);
-		sched.deleteJob(jobName, JOB_GROUP_NAME);
-	}
+					Scheduler scheduler = sf.getScheduler();
+					scheduler.start();
+					scheduler.scheduleJob(job, trigger);
 
-	public static void removeJob(String jobName, String jobGroupName, String triggerName, String triggerGroupName) throws SchedulerException {
-		Scheduler sched = sf.getScheduler();
-		sched.pauseTrigger(triggerName, triggerGroupName);
-		sched.unscheduleJob(triggerName, triggerGroupName);
-		sched.deleteJob(jobName, jobGroupName);
+					if (startImmediate)
+						scheduler.triggerJob(jobKey);
+				} catch (Exception e) {
+					logger.error("Error:", e);
+				}
+			}
+		}).start();
 	}
 }

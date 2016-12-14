@@ -39,7 +39,7 @@
 
     Slice.defineOperations(idl.ScheduleService, idl.ScheduleServicePrx,
     {
-        "registSchedule": [, , , , , [7], [[7], [7], [7]], , , , ],
+        "registSchedule": [, , , , , [7], [[7], [7], [7], [1]], , , , ],
         "executeSchedule": [, , , , , [7], [[7]], , , , ]
     });
     exports.idl = idl;

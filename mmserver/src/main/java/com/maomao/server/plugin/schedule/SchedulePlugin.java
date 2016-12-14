@@ -43,8 +43,8 @@ import com.maomao.server.plugin.schedule.idl.ScheduleServicePrx;
  */
 public class SchedulePlugin implements IPlugin {
 	Logger logger = LoggerFactory.getLogger(SchedulePlugin.class);
-	
-	Map<String, Schedule> schedules = new HashMap<String, Schedule> ();
+
+	Map<String, Schedule> schedules = new HashMap<String, Schedule>();
 
 	/**
 	 * Call before start.
@@ -58,6 +58,8 @@ public class SchedulePlugin implements IPlugin {
 		Class<?> clazz;
 		String serviceName;
 		String cronExpress;
+		boolean imediate;
+		MMSchedule anno;
 		for (Entry<String, Object> entry : components.entrySet()) {
 			obj = entry.getValue();
 			clazz = obj.getClass();
@@ -67,16 +69,17 @@ public class SchedulePlugin implements IPlugin {
 					// check method
 					try {
 						// add this schedule
+						anno = m.getAnnotation(MMSchedule.class);
 						serviceName = clazz.getName() + ":" + m.getName();
-						cronExpress = m.getAnnotation(MMSchedule.class).cron();
-						
+						cronExpress = anno.cron();
+						imediate = anno.startImmediate();
 						if (StringUtils.isEmpty(cronExpress)) {
-							throw new Exception("Cannot find any cron express in your schedule : "  + clazz.getName() + "." + m.getName());
+							throw new Exception("Cannot find any cron express in your schedule : " + clazz.getName() + "." + m.getName());
 						}
-						
-						notifyMMServer(serviceName, cronExpress);
+
+						notifyMMServer(serviceName, cronExpress, imediate);
 					} catch (Exception e) {
-						logger.error("Error occured when parse the schedule, ignore this error and try continue to start :" , e);
+						logger.error("Error occured when parse the schedule, ignore this error and try continue to start :", e);
 					}
 				}
 			}
@@ -86,7 +89,7 @@ public class SchedulePlugin implements IPlugin {
 	/**
 	 * Notify mmserver to load this task
 	 */
-	void notifyMMServer(final String serviceName, final String cronExpress) {
+	void notifyMMServer(final String serviceName, final String cronExpress, final boolean imediate) {
 		final String localIp, serverIp;
 		final int localPort, serverPort;
 		boolean serverSsl;
@@ -110,7 +113,7 @@ public class SchedulePlugin implements IPlugin {
 			@Override
 			public void execute(Object prx) {
 				ScheduleServicePrx servicePrx = (ScheduleServicePrx) prx;
-				servicePrx.registSchedule(makeConnectionUrl(localIp, localPort, false), serviceName, cronExpress);
+				servicePrx.registSchedule(makeConnectionUrl(localIp, localPort, false), serviceName, cronExpress, imediate);
 			}
 		});
 	}
@@ -126,7 +129,7 @@ public class SchedulePlugin implements IPlugin {
 	 * @param port
 	 * @param serviceName
 	 */
-	public void addSchedule(String connectionUrl, String serviceName, String cronExpress) throws Exception {
+	public void addSchedule(String connectionUrl, String serviceName, String cronExpress, boolean imediate) throws Exception {
 		// check if there's a same schedule. if so, ignore it.
 		String name = connectionUrl + "/" + serviceName;
 		Schedule schedule = schedules.get(name);
@@ -138,11 +141,12 @@ public class SchedulePlugin implements IPlugin {
 		schedule.setConnectionUrl(connectionUrl);
 		schedule.setServiceName(serviceName);
 		schedule.setCronExpression(cronExpress);
+		schedule.setImediate(imediate);
 		schedules.put(name, schedule);
-		QuartzManager.addJob(name, ScheduleJob.class, schedule.getCronExpression());
+		QuartzManager.getInstance().addJob(name, ScheduleJob.class, schedule.getCronExpression(), schedule.isImediate());
 	}
-	
-	public Schedule getSchedule(String name){
+
+	public Schedule getSchedule(String name) {
 		return schedules.get(name);
 	}
 }

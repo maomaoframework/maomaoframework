@@ -25,7 +25,7 @@ public interface _ScheduleServiceOperationsNC
     /**
      * add a schedule to schedule center
      **/
-    String registSchedule(String connectionUrl, String serviceName, String cronExpress);
+    String registSchedule(String connectionUrl, String serviceName, String cronExpress, boolean imediate);
 
     /**
      * execute schedule

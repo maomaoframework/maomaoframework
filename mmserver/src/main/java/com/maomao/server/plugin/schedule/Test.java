@@ -11,23 +11,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.maomao.framework.support.schedule;
+package com.maomao.server.plugin.schedule;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 
 /**
- * @author maomao
+ * @author huxg
  * 
  */
-@Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE })
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-public @interface MMSchedule {
-	String cron() default "";
-	boolean startImmediate() default true;
+public class Test implements Job {
 
-}
+	@Override
+	public void execute(JobExecutionContext context) throws JobExecutionException {
+		SimpleDateFormat sf = new SimpleDateFormat("HH:mm:ss");
+		
+		System.out.println(sf.format(new Date()));
+	}
+};

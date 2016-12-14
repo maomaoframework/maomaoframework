@@ -40,7 +40,7 @@ public class ScheduleServiceImpl extends _ScheduleServiceDisp {
 	/**
 	 * Regist a schedule task. Load the
 	 */
-	public String registSchedule(String connectionUrl, String serviceName, String cronExpress, Current __current) {
+	public String registSchedule(String connectionUrl, String serviceName, String cronExpress, boolean imediate,  Current __current) {
 		IMMServer server = Main.getServer();
 
 		try {
@@ -50,7 +50,7 @@ public class ScheduleServiceImpl extends _ScheduleServiceDisp {
 			SchedulePlugin plugin = pluginFactory.getPlugin(SchedulePlugin.class);
 			if (plugin != null) {
 				// add schedule to executor
-				plugin.addSchedule(connectionUrl, serviceName, cronExpress);
+				plugin.addSchedule(connectionUrl, serviceName, cronExpress, imediate);
 			}
 			return Message.okMessage();
 		} catch (Exception e) {

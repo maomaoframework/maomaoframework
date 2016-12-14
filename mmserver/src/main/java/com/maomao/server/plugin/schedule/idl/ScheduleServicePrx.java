@@ -25,48 +25,33 @@ public interface ScheduleServicePrx extends Ice.ObjectPrx
     /**
      * add a schedule to schedule center
      **/
-    public String registSchedule(String connectionUrl, String serviceName, String cronExpress);
+    public String registSchedule(String connectionUrl, String serviceName, String cronExpress, boolean imediate);
 
     /**
      * add a schedule to schedule center
      * @param __ctx The Context map to send with the invocation.
      **/
-    public String registSchedule(String connectionUrl, String serviceName, String cronExpress, java.util.Map<String, String> __ctx);
+    public String registSchedule(String connectionUrl, String serviceName, String cronExpress, boolean imediate, java.util.Map<String, String> __ctx);
 
     /**
      * add a schedule to schedule center
      * @return The asynchronous result object.
      **/
-    public Ice.AsyncResult begin_registSchedule(String connectionUrl, String serviceName, String cronExpress);
+    public Ice.AsyncResult begin_registSchedule(String connectionUrl, String serviceName, String cronExpress, boolean imediate);
 
     /**
      * add a schedule to schedule center
      * @param __ctx The Context map to send with the invocation.
      * @return The asynchronous result object.
      **/
-    public Ice.AsyncResult begin_registSchedule(String connectionUrl, String serviceName, String cronExpress, java.util.Map<String, String> __ctx);
+    public Ice.AsyncResult begin_registSchedule(String connectionUrl, String serviceName, String cronExpress, boolean imediate, java.util.Map<String, String> __ctx);
 
     /**
      * add a schedule to schedule center
      * @param __cb The asynchronous callback object.
      * @return The asynchronous result object.
      **/
-    public Ice.AsyncResult begin_registSchedule(String connectionUrl, String serviceName, String cronExpress, Ice.Callback __cb);
-
-    /**
-     * add a schedule to schedule center
-     * @param __ctx The Context map to send with the invocation.
-     * @param __cb The asynchronous callback object.
-     * @return The asynchronous result object.
-     **/
-    public Ice.AsyncResult begin_registSchedule(String connectionUrl, String serviceName, String cronExpress, java.util.Map<String, String> __ctx, Ice.Callback __cb);
-
-    /**
-     * add a schedule to schedule center
-     * @param __cb The asynchronous callback object.
-     * @return The asynchronous result object.
-     **/
-    public Ice.AsyncResult begin_registSchedule(String connectionUrl, String serviceName, String cronExpress, Callback_ScheduleService_registSchedule __cb);
+    public Ice.AsyncResult begin_registSchedule(String connectionUrl, String serviceName, String cronExpress, boolean imediate, Ice.Callback __cb);
 
     /**
      * add a schedule to schedule center
@@ -74,7 +59,22 @@ public interface ScheduleServicePrx extends Ice.ObjectPrx
      * @param __cb The asynchronous callback object.
      * @return The asynchronous result object.
      **/
-    public Ice.AsyncResult begin_registSchedule(String connectionUrl, String serviceName, String cronExpress, java.util.Map<String, String> __ctx, Callback_ScheduleService_registSchedule __cb);
+    public Ice.AsyncResult begin_registSchedule(String connectionUrl, String serviceName, String cronExpress, boolean imediate, java.util.Map<String, String> __ctx, Ice.Callback __cb);
+
+    /**
+     * add a schedule to schedule center
+     * @param __cb The asynchronous callback object.
+     * @return The asynchronous result object.
+     **/
+    public Ice.AsyncResult begin_registSchedule(String connectionUrl, String serviceName, String cronExpress, boolean imediate, Callback_ScheduleService_registSchedule __cb);
+
+    /**
+     * add a schedule to schedule center
+     * @param __ctx The Context map to send with the invocation.
+     * @param __cb The asynchronous callback object.
+     * @return The asynchronous result object.
+     **/
+    public Ice.AsyncResult begin_registSchedule(String connectionUrl, String serviceName, String cronExpress, boolean imediate, java.util.Map<String, String> __ctx, Callback_ScheduleService_registSchedule __cb);
 
     /**
      * add a schedule to schedule center
@@ -85,6 +85,7 @@ public interface ScheduleServicePrx extends Ice.ObjectPrx
     public Ice.AsyncResult begin_registSchedule(String connectionUrl, 
                                                 String serviceName, 
                                                 String cronExpress, 
+                                                boolean imediate, 
                                                 IceInternal.Functional_GenericCallback1<String> __responseCb, 
                                                 IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb);
 
@@ -98,6 +99,7 @@ public interface ScheduleServicePrx extends Ice.ObjectPrx
     public Ice.AsyncResult begin_registSchedule(String connectionUrl, 
                                                 String serviceName, 
                                                 String cronExpress, 
+                                                boolean imediate, 
                                                 IceInternal.Functional_GenericCallback1<String> __responseCb, 
                                                 IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb, 
                                                 IceInternal.Functional_BoolCallback __sentCb);
@@ -112,6 +114,7 @@ public interface ScheduleServicePrx extends Ice.ObjectPrx
     public Ice.AsyncResult begin_registSchedule(String connectionUrl, 
                                                 String serviceName, 
                                                 String cronExpress, 
+                                                boolean imediate, 
                                                 java.util.Map<String, String> __ctx, 
                                                 IceInternal.Functional_GenericCallback1<String> __responseCb, 
                                                 IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb);
@@ -127,6 +130,7 @@ public interface ScheduleServicePrx extends Ice.ObjectPrx
     public Ice.AsyncResult begin_registSchedule(String connectionUrl, 
                                                 String serviceName, 
                                                 String cronExpress, 
+                                                boolean imediate, 
                                                 java.util.Map<String, String> __ctx, 
                                                 IceInternal.Functional_GenericCallback1<String> __responseCb, 
                                                 IceInternal.Functional_GenericCallback1<Ice.Exception> __exceptionCb, 

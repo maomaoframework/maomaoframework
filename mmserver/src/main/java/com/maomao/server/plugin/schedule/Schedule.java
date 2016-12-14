@@ -25,7 +25,9 @@ public class Schedule {
 	private String cronExpression;
 
 	private String serviceName;
-
+	
+	private boolean imediate;
+	
 	public String getConnectionUrl() {
 		return connectionUrl;
 	}
@@ -48,6 +50,14 @@ public class Schedule {
 
 	public void setServiceName(String serviceName) {
 		this.serviceName = serviceName;
+	}
+
+	public boolean isImediate() {
+		return imediate;
+	}
+
+	public void setImediate(boolean imediate) {
+		this.imediate = imediate;
 	}
 
 }

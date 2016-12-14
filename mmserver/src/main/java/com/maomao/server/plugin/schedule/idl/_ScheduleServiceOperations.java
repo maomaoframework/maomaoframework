@@ -26,7 +26,7 @@ public interface _ScheduleServiceOperations
      * add a schedule to schedule center
      * @param __current The Current object for the invocation.
      **/
-    String registSchedule(String connectionUrl, String serviceName, String cronExpress, Ice.Current __current);
+    String registSchedule(String connectionUrl, String serviceName, String cronExpress, boolean imediate, Ice.Current __current);
 
     /**
      * execute schedule

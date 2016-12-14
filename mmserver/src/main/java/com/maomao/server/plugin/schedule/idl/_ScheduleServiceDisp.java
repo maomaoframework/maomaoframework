@@ -81,9 +81,9 @@ public abstract class _ScheduleServiceDisp extends Ice.ObjectImpl implements Sch
     /**
      * add a schedule to schedule center
      **/
-    public final String registSchedule(String connectionUrl, String serviceName, String cronExpress)
+    public final String registSchedule(String connectionUrl, String serviceName, String cronExpress, boolean imediate)
     {
-        return registSchedule(connectionUrl, serviceName, cronExpress, null);
+        return registSchedule(connectionUrl, serviceName, cronExpress, imediate, null);
     }
 
     public static Ice.DispatchStatus ___registSchedule(ScheduleService __obj, IceInternal.Incoming __inS, Ice.Current __current)
@@ -93,11 +93,13 @@ public abstract class _ScheduleServiceDisp extends Ice.ObjectImpl implements Sch
         String connectionUrl;
         String serviceName;
         String cronExpress;
+        boolean imediate;
         connectionUrl = __is.readString();
         serviceName = __is.readString();
         cronExpress = __is.readString();
+        imediate = __is.readBool();
         __inS.endReadParams();
-        String __ret = __obj.registSchedule(connectionUrl, serviceName, cronExpress, __current);
+        String __ret = __obj.registSchedule(connectionUrl, serviceName, cronExpress, imediate, __current);
         IceInternal.BasicStream __os = __inS.__startWriteParams(Ice.FormatType.DefaultFormat);
         __os.writeString(__ret);
         __inS.__endWriteParams(true);

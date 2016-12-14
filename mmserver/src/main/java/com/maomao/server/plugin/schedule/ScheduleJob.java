@@ -33,7 +33,7 @@ public class ScheduleJob implements Job {
 
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
-		String name = context.getJobDetail().getName();
+		String name = context.getJobDetail().getKey().getName();
 		SchedulePlugin schedulePlugin = Main.getServer().getPluginFactory().getPlugin(SchedulePlugin.class);
 		if (null != schedulePlugin) {
 			final Schedule schedule = schedulePlugin.getSchedule(name);

@@ -462,9 +462,8 @@
 							<overWriteSnapshots>false</overWriteSnapshots>
 							<overWriteIfNewer>true</overWriteIfNewer>
 							<excludeArtifactIds>tools,jconsole</excludeArtifactIds>
+							<excludeArtifactIds>mmbootstrap,mmframework</excludeArtifactIds>
 						</configuration>
-						
-						
 					</execution>
 				</executions>
 			</plugin>

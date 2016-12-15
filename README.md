@@ -9,3 +9,6 @@ Maomaoframework is a distributed, high performance service based java framework,
 * Development tool : Maomaoframework provides server running environment, development framework and development tools based on Eclipse Plugin　technology.
 * Management : Maomaoframework provides CLI management tools and web management platform.
 
+# Quick Start
+
+You can download the latest server environment from https://github.com/maomaoframework/maomaoframework/releases.

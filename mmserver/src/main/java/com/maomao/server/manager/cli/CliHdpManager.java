@@ -146,6 +146,7 @@ public class CliHdpManager {
 		Option asOption = Option.builder("as").longOpt("app-stop").hasArg().argName("as").desc(" Stop the specified app.").build();
 		Option auOption = Option.builder("au").longOpt("app-update").hasArg().argName("au").desc(" Update app, then restart all of the instances of this app.")
 				.build();
+		
 		Option stopOption = Option.builder("stop").longOpt("stop").hasArg(false).argName("stop").desc(" Stop hdp server.").build();
 
 		// Create remote instance
@@ -407,6 +408,46 @@ public class CliHdpManager {
 			public void execute(Object prx) {
 				AppServicePrx appServicePrx = (AppServicePrx) prx;
 				String result = appServicePrx.restartApp(app);
+				printResult(result);
+			}
+		});
+	}
+	
+	/**
+	 * update app
+	 */
+	public void au(String params) throws Exception {
+		// upload app file
+		if (StringUtils.isEmpty(params)) {
+			throw new Exception("must specified [file] parameters.\nFor example :\n hdmanager /home/app.jar");
+		}
+
+		File file = new File(params);
+		if (!file.exists()) {
+			throw new Exception("cannot find app file: " + params);
+		}
+
+		String filename = file.getName();
+		App app = new App();
+		AppManager.parseAppModeXml(app, file);
+		final String appid = app.getAppid();
+		File appFolder = new File(appsFolder, appid);
+		if (!appFolder.exists()) {
+			appFolder.mkdirs();
+		}
+
+		if (filename.endsWith(".jar") && file.isFile()) {
+			ZipUtils.unzip(file.getCanonicalPath(), appFolder.getCanonicalPath());
+		} else if (file.isDirectory()) {
+			FileUtils.copyFiles2(file.getCanonicalPath(), appFolder.getCanonicalPath());
+		}
+		
+		IceClient iceClient = new IceClient(serverConfiguration.getRpc().getIp(), serverConfiguration.getRpc().getPort(), serverConfiguration.getRpc().isSsl());
+		iceClient.invoke(AppService.class, new Action() {
+			@Override
+			public void execute(Object prx) {
+				AppServicePrx appServicePrx = (AppServicePrx) prx;
+				String result = appServicePrx.restartApp(appid);
 				printResult(result);
 			}
 		});

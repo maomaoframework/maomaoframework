@@ -127,6 +127,11 @@ public class MMServer extends AbstractServer {
 	 * 启动一个App实例
 	 */
 	public void startRemoteAppInstance(App app, AppInstance instance) throws Exception {
+		// if instance is start then continue;
+		if (instance.getRunningStatus() == 1) {
+			return;
+		}
+		
 		// 取得SSH服务器
 		SSHServer server = SSHServerManager.getInstance().getServerById(instance.getSshServer());
 		if (server != null) {
@@ -157,6 +162,9 @@ public class MMServer extends AbstractServer {
 	 * @param instance
 	 */
 	public void startLocalAppInstance(App app, AppInstance instance) throws Exception {
+		if (instance.getRunningStatus() == 1) 
+			return ;
+		
 		// 取得应用所在目录
 		String serverIp = getIp();
 		int serverPort = getPort();
@@ -190,7 +198,7 @@ public class MMServer extends AbstractServer {
 	}
 
 	/**
-	 * 关闭一个App实例
+	 * Shutdown app instance
 	 */
 	public void restartAppInstance(final App app, final AppInstance instance) {
 		IceClient client = new IceClient(instance.getIp(), instance.getPort(), instance.isSsl());
@@ -199,7 +207,6 @@ public class MMServer extends AbstractServer {
 		ServerEvent shutdownEvent = ServerEventFacotory.getInstance().getEvent(ShutdownEvent.class);
 		ServerEventRunner runner = new ServerEventRunner(shutdownEvent, client);
 		runner.post();
-
 		instance.setRunningStatus(AppInstance.STATUS_STOP);
 
 		// 创建一个启动线程

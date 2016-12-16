@@ -155,6 +155,12 @@ public class App {
 	 * @param instance
 	 */
 	public void addAppInstance(AppInstance instance) {
+		if (instances != null) {
+			for (AppInstance a : instances) {
+				if (a.getIp().equals(instance.getIp()) && a.getPort() == instance.getPort())
+					throw new RuntimeException("Instance exist.");
+			}
+		}
 		this.instances.add(instance);
 	}
 

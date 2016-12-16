@@ -190,6 +190,11 @@ public class AppManager {
 	 * @param appId
 	 */
 	public void createApp(String appId) {
+		for (App app : apps) {
+			if (app.getAppid().equals(appId)) {
+				throw new RuntimeException("Appid exist");
+			}
+		}
 		App app = new App();
 		app.setAppid(appId);
 		

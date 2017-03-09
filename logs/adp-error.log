@@ -1,0 +1,365 @@
+2016-12-13 10:55:00:ERROR localhost-startStop-1 org.springframework.web.context.ContextLoader - Context initialization failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'mgr.commons.service.CommonService' defined in URL [jar:file:/home/huxg/Workspace/eclipse_adp-weixin-taxschool/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/adp/WEB-INF/lib/biz-mgr.jar!/META-INF/spring/spring-config-mgr.xml]: Invocation of init method failed; nested exception is org.springframework.jdbc.BadSqlGrammarException: 
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'T.discountMc' in 'field list'
+### The error may exist in URL [jar:file:/home/huxg/Workspace/eclipse_adp-weixin-taxschool/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/adp/WEB-INF/lib/biz-mgr.jar!/META-INF/sql/sql-mgr-commons.xml]
+### The error may involve mgr.commons.CommonService_getZkdh-Inline
+### The error occurred while setting parameters
+### SQL: SELECT T.discountId id,T.discountMc text FROM order_discount T
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'T.discountMc' in 'field list'
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'T.discountMc' in 'field list'
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1455)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:519)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:456)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:294)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:225)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:291)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:193)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:585)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:913)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:464)
+	at org.springframework.web.context.ContextLoader.configureAndRefreshWebApplicationContext(ContextLoader.java:385)
+	at org.springframework.web.context.ContextLoader.initWebApplicationContext(ContextLoader.java:284)
+	at org.springframework.web.context.ContextLoaderListener.contextInitialized(ContextLoaderListener.java:111)
+	at com.digitalchina.spring.context.ContextLoaderListener.contextInitialized(ContextLoaderListener.java:40)
+	at org.apache.catalina.core.StandardContext.listenerStart(StandardContext.java:5017)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:5531)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:150)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1574)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1564)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:262)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: org.springframework.jdbc.BadSqlGrammarException: 
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'T.discountMc' in 'field list'
+### The error may exist in URL [jar:file:/home/huxg/Workspace/eclipse_adp-weixin-taxschool/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/adp/WEB-INF/lib/biz-mgr.jar!/META-INF/sql/sql-mgr-commons.xml]
+### The error may involve mgr.commons.CommonService_getZkdh-Inline
+### The error occurred while setting parameters
+### SQL: SELECT T.discountId id,T.discountMc text FROM order_discount T
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'T.discountMc' in 'field list'
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'T.discountMc' in 'field list'
+	at org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator.doTranslate(SQLErrorCodeSQLExceptionTranslator.java:233)
+	at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:72)
+	at org.mybatis.spring.MyBatisExceptionTranslator.translateExceptionIfPossible(MyBatisExceptionTranslator.java:71)
+	at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:365)
+	at com.sun.proxy.$Proxy9.selectList(Unknown Source)
+	at org.mybatis.spring.SqlSessionTemplate.selectList(SqlSessionTemplate.java:195)
+	at com.dcits.db.mybatis.dao.MybatisDao.list(MybatisDao.java:33)
+	at com.dcits.app.dao.DataWindowBasic.query(DataWindowBasic.java:21)
+	at com.dcits.app.dao.DataWindow.basicQuery(DataWindow.java:52)
+	at com.dcits.app.dao.DataWindow.query(DataWindow.java:57)
+	at com.dcits.app.service.CommonService.initCombobox(CommonService.java:69)
+	at com.dcits.mgr.commons.service.CommonService.init(CommonService.java:44)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeCustomInitMethod(AbstractAutowireCapableBeanFactory.java:1581)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1522)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1452)
+	... 22 more
+Caused by: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'T.discountMc' in 'field list'
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:57)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:526)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:408)
+	at com.mysql.jdbc.Util.getInstance(Util.java:383)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:1062)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:4226)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:4158)
+	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2615)
+	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2776)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2840)
+	at com.mysql.jdbc.PreparedStatement.executeInternal(PreparedStatement.java:2082)
+	at com.mysql.jdbc.PreparedStatement.execute(PreparedStatement.java:1302)
+	at com.mchange.v2.c3p0.impl.NewProxyPreparedStatement.execute(NewProxyPreparedStatement.java:989)
+	at org.apache.ibatis.executor.statement.PreparedStatementHandler.query(PreparedStatementHandler.java:56)
+	at org.apache.ibatis.executor.statement.RoutingStatementHandler.query(RoutingStatementHandler.java:70)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.apache.ibatis.plugin.Plugin.invoke(Plugin.java:59)
+	at com.sun.proxy.$Proxy12.query(Unknown Source)
+	at org.apache.ibatis.executor.BatchExecutor.doQuery(BatchExecutor.java:83)
+	at org.apache.ibatis.executor.BaseExecutor.queryFromDatabase(BaseExecutor.java:259)
+	at org.apache.ibatis.executor.BaseExecutor.query(BaseExecutor.java:132)
+	at org.apache.ibatis.executor.BaseExecutor.query(BaseExecutor.java:115)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:104)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:98)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:355)
+	... 37 more
+2016-12-13 11:20:41:ERROR localhost-startStop-1 org.springframework.web.context.ContextLoader - Context initialization failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'mgr.commons.service.CommonService' defined in URL [jar:file:/home/huxg/Workspace/eclipse_adp-weixin-taxschool/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/adp/WEB-INF/lib/biz-mgr.jar!/META-INF/spring/spring-config-mgr.xml]: Invocation of init method failed; nested exception is org.springframework.jdbc.BadSqlGrammarException: 
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'T.discountMc' in 'field list'
+### The error may exist in URL [jar:file:/home/huxg/Workspace/eclipse_adp-weixin-taxschool/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/adp/WEB-INF/lib/biz-mgr.jar!/META-INF/sql/sql-mgr-commons.xml]
+### The error may involve mgr.commons.CommonService_getZkdh-Inline
+### The error occurred while setting parameters
+### SQL: SELECT T.discountId id,T.discountMc text FROM order_discount T
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'T.discountMc' in 'field list'
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'T.discountMc' in 'field list'
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1455)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:519)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:456)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:294)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:225)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:291)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:193)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:585)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:913)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:464)
+	at org.springframework.web.context.ContextLoader.configureAndRefreshWebApplicationContext(ContextLoader.java:385)
+	at org.springframework.web.context.ContextLoader.initWebApplicationContext(ContextLoader.java:284)
+	at org.springframework.web.context.ContextLoaderListener.contextInitialized(ContextLoaderListener.java:111)
+	at com.digitalchina.spring.context.ContextLoaderListener.contextInitialized(ContextLoaderListener.java:40)
+	at org.apache.catalina.core.StandardContext.listenerStart(StandardContext.java:5017)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:5531)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:150)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1574)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1564)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:262)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: org.springframework.jdbc.BadSqlGrammarException: 
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'T.discountMc' in 'field list'
+### The error may exist in URL [jar:file:/home/huxg/Workspace/eclipse_adp-weixin-taxschool/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/adp/WEB-INF/lib/biz-mgr.jar!/META-INF/sql/sql-mgr-commons.xml]
+### The error may involve mgr.commons.CommonService_getZkdh-Inline
+### The error occurred while setting parameters
+### SQL: SELECT T.discountId id,T.discountMc text FROM order_discount T
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'T.discountMc' in 'field list'
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'T.discountMc' in 'field list'
+	at org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator.doTranslate(SQLErrorCodeSQLExceptionTranslator.java:233)
+	at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:72)
+	at org.mybatis.spring.MyBatisExceptionTranslator.translateExceptionIfPossible(MyBatisExceptionTranslator.java:71)
+	at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:365)
+	at com.sun.proxy.$Proxy9.selectList(Unknown Source)
+	at org.mybatis.spring.SqlSessionTemplate.selectList(SqlSessionTemplate.java:195)
+	at com.dcits.db.mybatis.dao.MybatisDao.list(MybatisDao.java:33)
+	at com.dcits.app.dao.DataWindowBasic.query(DataWindowBasic.java:21)
+	at com.dcits.app.dao.DataWindow.basicQuery(DataWindow.java:52)
+	at com.dcits.app.dao.DataWindow.query(DataWindow.java:57)
+	at com.dcits.app.service.CommonService.initCombobox(CommonService.java:69)
+	at com.dcits.mgr.commons.service.CommonService.init(CommonService.java:44)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeCustomInitMethod(AbstractAutowireCapableBeanFactory.java:1581)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1522)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1452)
+	... 22 more
+Caused by: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'T.discountMc' in 'field list'
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:57)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:526)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:408)
+	at com.mysql.jdbc.Util.getInstance(Util.java:383)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:1062)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:4226)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:4158)
+	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2615)
+	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2776)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2840)
+	at com.mysql.jdbc.PreparedStatement.executeInternal(PreparedStatement.java:2082)
+	at com.mysql.jdbc.PreparedStatement.execute(PreparedStatement.java:1302)
+	at com.mchange.v2.c3p0.impl.NewProxyPreparedStatement.execute(NewProxyPreparedStatement.java:989)
+	at org.apache.ibatis.executor.statement.PreparedStatementHandler.query(PreparedStatementHandler.java:56)
+	at org.apache.ibatis.executor.statement.RoutingStatementHandler.query(RoutingStatementHandler.java:70)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.apache.ibatis.plugin.Plugin.invoke(Plugin.java:59)
+	at com.sun.proxy.$Proxy12.query(Unknown Source)
+	at org.apache.ibatis.executor.BatchExecutor.doQuery(BatchExecutor.java:83)
+	at org.apache.ibatis.executor.BaseExecutor.queryFromDatabase(BaseExecutor.java:259)
+	at org.apache.ibatis.executor.BaseExecutor.query(BaseExecutor.java:132)
+	at org.apache.ibatis.executor.BaseExecutor.query(BaseExecutor.java:115)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:104)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:98)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:355)
+	... 37 more
+2016-12-13 12:06:21:ERROR http-bio-9080-exec-4 com.dcits.app.servlet.WebServlet - 业务处理时出现异常：serviceName：null，methodName：null，requestJson：null
+java.lang.NullPointerException
+	at java.io.StringReader.<init>(StringReader.java:50)
+	at org.codehaus.jackson.JsonFactory.createJsonParser(JsonFactory.java:636)
+	at org.codehaus.jackson.map.ObjectMapper.readValue(ObjectMapper.java:1863)
+	at com.dcits.app.util.JacksonUtils.getMapFromJson(JacksonUtils.java:39)
+	at com.dcits.app.servlet.WebServlet.doPost(WebServlet.java:45)
+	at com.dcits.app.servlet.WebServlet.doGet(WebServlet.java:32)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:624)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:731)
+	at com.digitalchina.spring.web.module.ProxyServlet.service(ProxyServlet.java:209)
+	at com.digitalchina.spring.web.module.ServletRequestDispatcher.forward(ServletRequestDispatcher.java:31)
+	at com.digitalchina.spring.web.module.VirtualFilterChain.doFilter(VirtualFilterChain.java:48)
+	at com.digitalchina.spring.web.filter.ContextFilter.doFilter(ContextFilter.java:39)
+	at com.digitalchina.spring.web.module.ProxyFilter.doFilter(ProxyFilter.java:215)
+	at com.digitalchina.spring.web.module.VirtualFilterChain.doFilter(VirtualFilterChain.java:45)
+	at com.digitalchina.spring.web.module.WebContainer.doFilter(WebContainer.java:630)
+	at com.digitalchina.spring.web.module.DelegatingFilter.doFilter(DelegatingFilter.java:33)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:241)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:208)
+	at com.dcits.app.filter.UrlTransferFilter.doFilter(UrlTransferFilter.java:110)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:241)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:208)
+	at org.tuckey.web.filters.urlrewrite.RuleChain.handleRewrite(RuleChain.java:183)
+	at org.tuckey.web.filters.urlrewrite.RuleChain.doRules(RuleChain.java:146)
+	at org.tuckey.web.filters.urlrewrite.UrlRewriter.processRequest(UrlRewriter.java:93)
+	at org.tuckey.web.filters.urlrewrite.UrlRewriteFilter.doFilter(UrlRewriteFilter.java:487)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:241)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:208)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:330)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:118)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:84)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:342)
+	at com.dcits.portal.spring.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:39)
+	at com.dcits.portal.spring.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:32)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:342)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:113)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:342)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:103)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:342)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:113)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:342)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:54)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:342)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:45)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:342)
+	at org.springframework.security.web.authentication.www.BasicAuthenticationFilter.doFilter(BasicAuthenticationFilter.java:150)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:342)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:183)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:342)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:183)
+	at sun.reflect.GeneratedMethodAccessor43.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:318)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:196)
+	at com.sun.proxy.$Proxy6.doFilter(Unknown Source)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:342)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:105)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:342)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:87)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:342)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:192)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:160)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:346)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:259)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:241)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:208)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:88)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:76)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:241)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:208)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:220)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:122)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:505)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:170)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:103)
+	at org.apache.catalina.valves.AccessLogValve.invoke(AccessLogValve.java:957)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:116)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:423)
+	at org.apache.coyote.http11.AbstractHttp11Processor.process(AbstractHttp11Processor.java:1079)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:620)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:318)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:745)
+2016-12-13 14:05:11:ERROR http-bio-9080-exec-5 com.dcits.app.service.BaseService - 进入方法saveUserPaperResult,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052001,questionId=WT16900000062001,isLastQuestion=N,questionCount=0,paperQuestionTotal=3
+2016-12-13 14:05:11:ERROR http-bio-9080-exec-5 com.dcits.app.service.BaseService - 生成新的paperResultId,paperResultId=JG16900000117001
+2016-12-13 14:05:11:ERROR http-bio-9080-exec-5 com.dcits.app.service.BaseService - 开始调用saveUserPaperResultDetail,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052001,questionId=WT16900000062001,paperResultId=JG16900000117001,isLastQuestion=N,questionCount=0,paperQuestionTotal=3
+2016-12-13 14:05:11:ERROR http-bio-9080-exec-5 com.dcits.app.service.BaseService - 进入saveUserPaperResultDetail. userCode=WX16900000401002, paperResultId=JG16900000117001, questionIdWT16900000062001, answer=A, isCorrect=Y,isLastQuestion=N,questionCount=0,paperQuestionTotal=3
+2016-12-13 14:05:11:ERROR http-bio-9080-exec-5 com.dcits.app.service.BaseService - 插入答题记录. userCode=WX16900000401002, paperResultId=JG16900000117001, questionIdWT16900000062001, answer=A, isCorrect=Y,isLastQuestion=N,questionCount=0,paperQuestionTotal=3
+2016-12-13 14:05:11:ERROR http-bio-9080-exec-5 com.dcits.app.service.BaseService - 退出saveUserPaperResultDetail. userCode=WX16900000401002, paperResultId=JG16900000117001, questionIdWT16900000062001, answer=A, isCorrect=Y,isLastQuestion=N,questionCount=0,paperQuestionTotal=3
+2016-12-13 14:05:11:ERROR http-bio-9080-exec-5 com.dcits.app.service.BaseService - 结束调用saveUserPaperResultDetail,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052001,questionId=WT16900000062001,paperResultId=JG16900000117001,isLastQuestion=N,questionCount=0,paperQuestionTotal=3
+2016-12-13 14:05:11:ERROR http-bio-9080-exec-5 com.dcits.app.service.BaseService - 退出方法saveUserPaperResult,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052001questionId=WT16900000062001,isLastQuestion=N,questionCount=0,paperQuestionTotal=3
+2016-12-13 14:05:16:ERROR http-bio-9080-exec-9 com.dcits.app.service.BaseService - 进入方法saveUserPaperResult,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052001,questionId=WT16900000062002,isLastQuestion=N,questionCount=1,paperQuestionTotal=3
+2016-12-13 14:05:16:ERROR http-bio-9080-exec-9 com.dcits.app.service.BaseService - paperResultId已存在,paperResultId=JG16900000117001
+2016-12-13 14:05:16:ERROR http-bio-9080-exec-9 com.dcits.app.service.BaseService - 开始调用saveUserPaperResultDetail,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052001,questionId=WT16900000062002,paperResultId=JG16900000117001,isLastQuestion=N,questionCount=1,paperQuestionTotal=3
+2016-12-13 14:05:16:ERROR http-bio-9080-exec-9 com.dcits.app.service.BaseService - 进入saveUserPaperResultDetail. userCode=WX16900000401002, paperResultId=JG16900000117001, questionIdWT16900000062002, answer=ABC, isCorrect=Y,isLastQuestion=N,questionCount=1,paperQuestionTotal=3
+2016-12-13 14:05:16:ERROR http-bio-9080-exec-9 com.dcits.app.service.BaseService - 插入答题记录. userCode=WX16900000401002, paperResultId=JG16900000117001, questionIdWT16900000062002, answer=ABC, isCorrect=Y,isLastQuestion=N,questionCount=1,paperQuestionTotal=3
+2016-12-13 14:05:16:ERROR http-bio-9080-exec-9 com.dcits.app.service.BaseService - 退出saveUserPaperResultDetail. userCode=WX16900000401002, paperResultId=JG16900000117001, questionIdWT16900000062002, answer=ABC, isCorrect=Y,isLastQuestion=N,questionCount=1,paperQuestionTotal=3
+2016-12-13 14:05:16:ERROR http-bio-9080-exec-9 com.dcits.app.service.BaseService - 结束调用saveUserPaperResultDetail,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052001,questionId=WT16900000062002,paperResultId=JG16900000117001,isLastQuestion=N,questionCount=1,paperQuestionTotal=3
+2016-12-13 14:05:16:ERROR http-bio-9080-exec-9 com.dcits.app.service.BaseService - 退出方法saveUserPaperResult,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052001questionId=WT16900000062002,isLastQuestion=N,questionCount=1,paperQuestionTotal=3
+2016-12-13 14:05:18:ERROR http-bio-9080-exec-7 com.dcits.app.service.BaseService - 进入方法saveUserPaperResult,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052001,questionId=WT16900000062003,isLastQuestion=Y,questionCount=2,paperQuestionTotal=3
+2016-12-13 14:05:18:ERROR http-bio-9080-exec-7 com.dcits.app.service.BaseService - paperResultId已存在,paperResultId=JG16900000117001
+2016-12-13 14:05:18:ERROR http-bio-9080-exec-7 com.dcits.app.service.BaseService - 开始调用saveUserPaperResultDetail,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052001,questionId=WT16900000062003,paperResultId=JG16900000117001,isLastQuestion=Y,questionCount=2,paperQuestionTotal=3
+2016-12-13 14:05:18:ERROR http-bio-9080-exec-7 com.dcits.app.service.BaseService - 进入saveUserPaperResultDetail. userCode=WX16900000401002, paperResultId=JG16900000117001, questionIdWT16900000062003, answer=Y, isCorrect=Y,isLastQuestion=Y,questionCount=2,paperQuestionTotal=3
+2016-12-13 14:05:18:ERROR http-bio-9080-exec-7 com.dcits.app.service.BaseService - 插入答题记录. userCode=WX16900000401002, paperResultId=JG16900000117001, questionIdWT16900000062003, answer=Y, isCorrect=Y,isLastQuestion=Y,questionCount=2,paperQuestionTotal=3
+2016-12-13 14:05:18:ERROR http-bio-9080-exec-7 com.dcits.app.service.BaseService - 退出saveUserPaperResultDetail. userCode=WX16900000401002, paperResultId=JG16900000117001, questionIdWT16900000062003, answer=Y, isCorrect=Y,isLastQuestion=Y,questionCount=2,paperQuestionTotal=3
+2016-12-13 14:05:18:ERROR http-bio-9080-exec-7 com.dcits.app.service.BaseService - 结束调用saveUserPaperResultDetail,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052001,questionId=WT16900000062003,paperResultId=JG16900000117001,isLastQuestion=Y,questionCount=2,paperQuestionTotal=3
+2016-12-13 14:05:18:ERROR http-bio-9080-exec-7 com.dcits.app.service.BaseService - 进入最后一题：,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052001,questionId=WT16900000062003,paperResultId=JG16900000117001,isLastQuestion=Y,questionCount=2,paperQuestionTotal=3
+2016-12-13 14:05:18:ERROR http-bio-9080-exec-7 com.dcits.app.service.BaseService - 退出方法saveUserPaperResult,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052001questionId=WT16900000062003,isLastQuestion=Y,questionCount=2,paperQuestionTotal=3
+2016-12-13 14:10:45:ERROR http-bio-9080-exec-8 com.dcits.app.service.BaseService - 进入方法saveUserPaperResult,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052002,questionId=WT16900000062004,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:10:45:ERROR http-bio-9080-exec-8 com.dcits.app.service.BaseService - 生成新的paperResultId,paperResultId=JG16900000117002
+2016-12-13 14:10:45:ERROR http-bio-9080-exec-8 com.dcits.app.service.BaseService - 开始调用saveUserPaperResultDetail,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052002,questionId=WT16900000062004,paperResultId=JG16900000117002,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:10:45:ERROR http-bio-9080-exec-8 com.dcits.app.service.BaseService - 进入saveUserPaperResultDetail. userCode=WX16900000401002, paperResultId=JG16900000117002, questionIdWT16900000062004, answer=A, isCorrect=Y,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:10:45:ERROR http-bio-9080-exec-8 com.dcits.app.service.BaseService - 插入答题记录. userCode=WX16900000401002, paperResultId=JG16900000117002, questionIdWT16900000062004, answer=A, isCorrect=Y,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:10:45:ERROR http-bio-9080-exec-8 com.dcits.app.service.BaseService - 退出saveUserPaperResultDetail. userCode=WX16900000401002, paperResultId=JG16900000117002, questionIdWT16900000062004, answer=A, isCorrect=Y,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:10:45:ERROR http-bio-9080-exec-8 com.dcits.app.service.BaseService - 结束调用saveUserPaperResultDetail,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052002,questionId=WT16900000062004,paperResultId=JG16900000117002,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:10:45:ERROR http-bio-9080-exec-8 com.dcits.app.service.BaseService - 进入最后一题：,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052002,questionId=WT16900000062004,paperResultId=JG16900000117002,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:10:45:ERROR http-bio-9080-exec-8 com.dcits.app.service.BaseService - 退出方法saveUserPaperResult,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052002questionId=WT16900000062004,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:10:55:ERROR http-bio-9080-exec-4 com.dcits.app.service.BaseService - 进入方法saveUserPaperResult,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052003,questionId=WT16900000062005,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:10:55:ERROR http-bio-9080-exec-4 com.dcits.app.service.BaseService - 生成新的paperResultId,paperResultId=JG16900000117003
+2016-12-13 14:10:55:ERROR http-bio-9080-exec-4 com.dcits.app.service.BaseService - 开始调用saveUserPaperResultDetail,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052003,questionId=WT16900000062005,paperResultId=JG16900000117003,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:10:55:ERROR http-bio-9080-exec-4 com.dcits.app.service.BaseService - 进入saveUserPaperResultDetail. userCode=WX16900000401002, paperResultId=JG16900000117003, questionIdWT16900000062005, answer=Y, isCorrect=Y,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:10:55:ERROR http-bio-9080-exec-4 com.dcits.app.service.BaseService - 插入答题记录. userCode=WX16900000401002, paperResultId=JG16900000117003, questionIdWT16900000062005, answer=Y, isCorrect=Y,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:10:55:ERROR http-bio-9080-exec-4 com.dcits.app.service.BaseService - 退出saveUserPaperResultDetail. userCode=WX16900000401002, paperResultId=JG16900000117003, questionIdWT16900000062005, answer=Y, isCorrect=Y,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:10:55:ERROR http-bio-9080-exec-4 com.dcits.app.service.BaseService - 结束调用saveUserPaperResultDetail,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052003,questionId=WT16900000062005,paperResultId=JG16900000117003,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:10:55:ERROR http-bio-9080-exec-4 com.dcits.app.service.BaseService - 进入最后一题：,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052003,questionId=WT16900000062005,paperResultId=JG16900000117003,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:10:56:ERROR http-bio-9080-exec-4 com.dcits.app.service.BaseService - 退出方法saveUserPaperResult,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052003questionId=WT16900000062005,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:11:09:ERROR http-bio-9080-exec-2 com.dcits.app.service.BaseService - 进入方法saveUserPaperResult,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052003,questionId=WT16900000062005,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:11:09:ERROR http-bio-9080-exec-2 com.dcits.app.service.BaseService - 生成新的paperResultId,paperResultId=JG16900000117004
+2016-12-13 14:11:09:ERROR http-bio-9080-exec-2 com.dcits.app.service.BaseService - 开始调用saveUserPaperResultDetail,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052003,questionId=WT16900000062005,paperResultId=JG16900000117004,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:11:09:ERROR http-bio-9080-exec-2 com.dcits.app.service.BaseService - 进入saveUserPaperResultDetail. userCode=WX16900000401002, paperResultId=JG16900000117004, questionIdWT16900000062005, answer=N, isCorrect=N,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:11:09:ERROR http-bio-9080-exec-2 com.dcits.app.service.BaseService - 插入答题记录. userCode=WX16900000401002, paperResultId=JG16900000117004, questionIdWT16900000062005, answer=N, isCorrect=N,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:11:09:ERROR http-bio-9080-exec-2 com.dcits.app.service.BaseService - 退出saveUserPaperResultDetail. userCode=WX16900000401002, paperResultId=JG16900000117004, questionIdWT16900000062005, answer=N, isCorrect=N,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:11:09:ERROR http-bio-9080-exec-2 com.dcits.app.service.BaseService - 结束调用saveUserPaperResultDetail,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052003,questionId=WT16900000062005,paperResultId=JG16900000117004,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:11:09:ERROR http-bio-9080-exec-2 com.dcits.app.service.BaseService - 进入最后一题：,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052003,questionId=WT16900000062005,paperResultId=JG16900000117004,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:11:09:ERROR http-bio-9080-exec-2 com.dcits.app.service.BaseService - 退出方法saveUserPaperResult,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052003questionId=WT16900000062005,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:11:23:ERROR http-bio-9080-exec-5 com.dcits.app.service.BaseService - 进入方法saveUserPaperResult,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052004,questionId=WT16900000062006,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:11:23:ERROR http-bio-9080-exec-5 com.dcits.app.service.BaseService - 生成新的paperResultId,paperResultId=JG16900000117005
+2016-12-13 14:11:23:ERROR http-bio-9080-exec-5 com.dcits.app.service.BaseService - 开始调用saveUserPaperResultDetail,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052004,questionId=WT16900000062006,paperResultId=JG16900000117005,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:11:23:ERROR http-bio-9080-exec-5 com.dcits.app.service.BaseService - 进入saveUserPaperResultDetail. userCode=WX16900000401002, paperResultId=JG16900000117005, questionIdWT16900000062006, answer=A, isCorrect=Y,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:11:23:ERROR http-bio-9080-exec-5 com.dcits.app.service.BaseService - 插入答题记录. userCode=WX16900000401002, paperResultId=JG16900000117005, questionIdWT16900000062006, answer=A, isCorrect=Y,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:11:23:ERROR http-bio-9080-exec-5 com.dcits.app.service.BaseService - 退出saveUserPaperResultDetail. userCode=WX16900000401002, paperResultId=JG16900000117005, questionIdWT16900000062006, answer=A, isCorrect=Y,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:11:23:ERROR http-bio-9080-exec-5 com.dcits.app.service.BaseService - 结束调用saveUserPaperResultDetail,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052004,questionId=WT16900000062006,paperResultId=JG16900000117005,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:11:23:ERROR http-bio-9080-exec-5 com.dcits.app.service.BaseService - 进入最后一题：,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052004,questionId=WT16900000062006,paperResultId=JG16900000117005,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:11:23:ERROR http-bio-9080-exec-5 com.dcits.app.service.BaseService - 退出方法saveUserPaperResult,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052004questionId=WT16900000062006,isLastQuestion=Y,questionCount=0,paperQuestionTotal=1
+2016-12-13 14:11:33:ERROR http-bio-9080-exec-3 com.dcits.app.service.BaseService - 进入方法saveUserPaperResult,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052001,questionId=WT16900000062001,isLastQuestion=N,questionCount=0,paperQuestionTotal=3
+2016-12-13 14:11:33:ERROR http-bio-9080-exec-3 com.dcits.app.service.BaseService - 生成新的paperResultId,paperResultId=JG16900000117006
+2016-12-13 14:11:33:ERROR http-bio-9080-exec-3 com.dcits.app.service.BaseService - 开始调用saveUserPaperResultDetail,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052001,questionId=WT16900000062001,paperResultId=JG16900000117006,isLastQuestion=N,questionCount=0,paperQuestionTotal=3
+2016-12-13 14:11:33:ERROR http-bio-9080-exec-3 com.dcits.app.service.BaseService - 进入saveUserPaperResultDetail. userCode=WX16900000401002, paperResultId=JG16900000117006, questionIdWT16900000062001, answer=D, isCorrect=N,isLastQuestion=N,questionCount=0,paperQuestionTotal=3
+2016-12-13 14:11:33:ERROR http-bio-9080-exec-3 com.dcits.app.service.BaseService - 插入答题记录. userCode=WX16900000401002, paperResultId=JG16900000117006, questionIdWT16900000062001, answer=D, isCorrect=N,isLastQuestion=N,questionCount=0,paperQuestionTotal=3
+2016-12-13 14:11:33:ERROR http-bio-9080-exec-3 com.dcits.app.service.BaseService - 退出saveUserPaperResultDetail. userCode=WX16900000401002, paperResultId=JG16900000117006, questionIdWT16900000062001, answer=D, isCorrect=N,isLastQuestion=N,questionCount=0,paperQuestionTotal=3
+2016-12-13 14:11:33:ERROR http-bio-9080-exec-3 com.dcits.app.service.BaseService - 结束调用saveUserPaperResultDetail,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052001,questionId=WT16900000062001,paperResultId=JG16900000117006,isLastQuestion=N,questionCount=0,paperQuestionTotal=3
+2016-12-13 14:11:33:ERROR http-bio-9080-exec-3 com.dcits.app.service.BaseService - 退出方法saveUserPaperResult,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052001questionId=WT16900000062001,isLastQuestion=N,questionCount=0,paperQuestionTotal=3
+2016-12-13 14:11:35:ERROR http-bio-9080-exec-9 com.dcits.app.service.BaseService - 进入方法saveUserPaperResult,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052001,questionId=WT16900000062002,isLastQuestion=N,questionCount=1,paperQuestionTotal=3
+2016-12-13 14:11:35:ERROR http-bio-9080-exec-9 com.dcits.app.service.BaseService - paperResultId已存在,paperResultId=JG16900000117006
+2016-12-13 14:11:35:ERROR http-bio-9080-exec-9 com.dcits.app.service.BaseService - 开始调用saveUserPaperResultDetail,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052001,questionId=WT16900000062002,paperResultId=JG16900000117006,isLastQuestion=N,questionCount=1,paperQuestionTotal=3
+2016-12-13 14:11:35:ERROR http-bio-9080-exec-9 com.dcits.app.service.BaseService - 进入saveUserPaperResultDetail. userCode=WX16900000401002, paperResultId=JG16900000117006, questionIdWT16900000062002, answer=C, isCorrect=N,isLastQuestion=N,questionCount=1,paperQuestionTotal=3
+2016-12-13 14:11:35:ERROR http-bio-9080-exec-9 com.dcits.app.service.BaseService - 插入答题记录. userCode=WX16900000401002, paperResultId=JG16900000117006, questionIdWT16900000062002, answer=C, isCorrect=N,isLastQuestion=N,questionCount=1,paperQuestionTotal=3
+2016-12-13 14:11:35:ERROR http-bio-9080-exec-9 com.dcits.app.service.BaseService - 退出saveUserPaperResultDetail. userCode=WX16900000401002, paperResultId=JG16900000117006, questionIdWT16900000062002, answer=C, isCorrect=N,isLastQuestion=N,questionCount=1,paperQuestionTotal=3
+2016-12-13 14:11:35:ERROR http-bio-9080-exec-9 com.dcits.app.service.BaseService - 结束调用saveUserPaperResultDetail,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052001,questionId=WT16900000062002,paperResultId=JG16900000117006,isLastQuestion=N,questionCount=1,paperQuestionTotal=3
+2016-12-13 14:11:35:ERROR http-bio-9080-exec-9 com.dcits.app.service.BaseService - 退出方法saveUserPaperResult,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052001questionId=WT16900000062002,isLastQuestion=N,questionCount=1,paperQuestionTotal=3
+2016-12-13 14:11:38:ERROR http-bio-9080-exec-10 com.dcits.app.service.BaseService - 进入方法saveUserPaperResult,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052001,questionId=WT16900000062003,isLastQuestion=Y,questionCount=2,paperQuestionTotal=3
+2016-12-13 14:11:38:ERROR http-bio-9080-exec-10 com.dcits.app.service.BaseService - paperResultId已存在,paperResultId=JG16900000117006
+2016-12-13 14:11:38:ERROR http-bio-9080-exec-10 com.dcits.app.service.BaseService - 开始调用saveUserPaperResultDetail,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052001,questionId=WT16900000062003,paperResultId=JG16900000117006,isLastQuestion=Y,questionCount=2,paperQuestionTotal=3
+2016-12-13 14:11:38:ERROR http-bio-9080-exec-10 com.dcits.app.service.BaseService - 进入saveUserPaperResultDetail. userCode=WX16900000401002, paperResultId=JG16900000117006, questionIdWT16900000062003, answer=N, isCorrect=N,isLastQuestion=Y,questionCount=2,paperQuestionTotal=3
+2016-12-13 14:11:38:ERROR http-bio-9080-exec-10 com.dcits.app.service.BaseService - 插入答题记录. userCode=WX16900000401002, paperResultId=JG16900000117006, questionIdWT16900000062003, answer=N, isCorrect=N,isLastQuestion=Y,questionCount=2,paperQuestionTotal=3
+2016-12-13 14:11:38:ERROR http-bio-9080-exec-10 com.dcits.app.service.BaseService - 退出saveUserPaperResultDetail. userCode=WX16900000401002, paperResultId=JG16900000117006, questionIdWT16900000062003, answer=N, isCorrect=N,isLastQuestion=Y,questionCount=2,paperQuestionTotal=3
+2016-12-13 14:11:38:ERROR http-bio-9080-exec-10 com.dcits.app.service.BaseService - 结束调用saveUserPaperResultDetail,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052001,questionId=WT16900000062003,paperResultId=JG16900000117006,isLastQuestion=Y,questionCount=2,paperQuestionTotal=3
+2016-12-13 14:11:38:ERROR http-bio-9080-exec-10 com.dcits.app.service.BaseService - 进入最后一题：,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052001,questionId=WT16900000062003,paperResultId=JG16900000117006,isLastQuestion=Y,questionCount=2,paperQuestionTotal=3
+2016-12-13 14:11:38:ERROR http-bio-9080-exec-10 com.dcits.app.service.BaseService - 退出方法saveUserPaperResult,userCode=WX16900000401002,courseId=kc16100001,paperId=WJ16900000052001questionId=WT16900000062003,isLastQuestion=Y,questionCount=2,paperQuestionTotal=3

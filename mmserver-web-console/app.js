@@ -45,6 +45,13 @@ if (app.get('env') === 'development') {
   });
 }
 
+var mmclient = require('mmserver-client');
+mmclient.init({
+    protocal: 'tcp',
+    ip : 'localhost',
+    port : 10000
+  });
+
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {

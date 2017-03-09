@@ -1,0 +1,9 @@
+target
+.project
+.classpath
+**/.settings/*
+.settings/
+.settings/*
+.hdp
+dump.rdb
+node_deploy

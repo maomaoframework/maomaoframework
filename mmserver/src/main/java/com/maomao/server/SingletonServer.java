@@ -14,6 +14,9 @@
 package com.maomao.server;
 
 import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.net.ServerSocket;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.AccessController;
@@ -35,6 +38,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.maomao.framework.service.MaoMaoService;
 import com.maomao.server.plugin.PluginFactory;
+import com.maomao.server.support.rpc.IRPCServer;
 import com.maomao.server.support.rpc.RPCServerFactory;
 import com.maomao.startup.Constants;
 
@@ -48,8 +52,6 @@ import com.maomao.startup.Constants;
 public class SingletonServer extends AbstractServer {
 	static Logger logger = LoggerFactory.getLogger(SingletonServer.class);
 
-	ClassLoader appClassLoader;
-
 	String serverConfig = "conf/server.properties";
 
 	String logConfig = "conf/logging.properties";
@@ -60,11 +62,10 @@ public class SingletonServer extends AbstractServer {
 
 	AppManager appManager;
 
-	
 	@Override
 	public void init() {
 		super.init();
-		
+
 		// load spring.xml
 		this.applicationContext = new ClassPathXmlApplicationContext("spring.xml");
 
@@ -86,42 +87,55 @@ public class SingletonServer extends AbstractServer {
 	@Override
 	public void start() {
 		if (this.getAppManager().getApps() != null) {
-			parseAppUrl();
-			loadAppServices();
+			// load app url
+			for (App app : this.getAppManager().getApps()) {
+				try {
+					final URL[] urls = loadAppLibUrls(app);
+
+
+					// craate a classload from these urls
+					ClassLoader appClassloader = AccessController.doPrivileged(new PrivilegedAction<URLClassLoader>() {
+						@Override
+						public URLClassLoader run() {
+							return new URLClassLoader(urls , Thread.currentThread().getContextClassLoader());
+						}
+					});
+					
+					// start app
+					_start_app_(appClassloader);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+			}
 		}
 
-		RPCServerFactory.startDefault(avaliableServices, serverConfiguration.getRpc().getPort());
+		// load main services
+		Collection<Object> avaliableService = loadServices(applicationContext);
+		RPCServerFactory.startDefault(avaliableService, serverConfiguration.getRpc().getPort());
 		logger.error("Server started!");
 	}
 
 	/**
-	 * Parse app location
+	 * load all services;
 	 */
-	void parseAppUrl() {
-		// load app url
-		List<URL> murl = new ArrayList<URL>();
-		for (App app : this.getAppManager().getApps()) {
-			try {
-				murl.add(new File(app.getDocBase()).toURI().toURL());
-			} catch (Exception e) {
-				e.printStackTrace();
+	Collection<Object> loadServices(ApplicationContext context) {
+		Map<String, Object> objects = context.getBeansWithAnnotation(MaoMaoService.class);
+		Collection<Object> services = objects.values();
+		Collection<Object> avaliableService = new ArrayList<Object>();
+		try {
+			if (null != services) {
+				for (Object o : services) {
+					avaliableService.add(o);
+				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		appLoaderUrls = murl.toArray(new URL[0]);
-
-		// craate a classload from these urls
-		appClassLoader = AccessController.doPrivileged(new PrivilegedAction<URLClassLoader>() {
-			@Override
-			public URLClassLoader run() {
-				return new URLClassLoader(appLoaderUrls, Thread.currentThread().getContextClassLoader());
-			}
-		});
+		return avaliableService;
 	}
 
-	/**
-	 * load all these services
-	 */
-	void loadAppServices() {
+	void _start_app_(final ClassLoader cl) {
 		ExecutorService service = Executors.newCachedThreadPool();
 
 		int appCount = appManager.getApps().size();
@@ -132,9 +146,20 @@ public class SingletonServer extends AbstractServer {
 				public void run() {
 					try {
 						cdOrder.await();
-						Thread.currentThread().setContextClassLoader(appClassLoader);
+						Thread.currentThread().setContextClassLoader(cl);
 						ClassPathXmlApplicationContext appCtx = new ClassPathXmlApplicationContext("spring-app.xml");
-						mergeService(app, appCtx);
+
+						Collection<Object> avaliableService = loadServices(appCtx);
+
+						AppInstance ai = app.getInstances().get(0);
+						int port = getAvaliablePort();
+						ai.setPort(port);
+						ai.setIp(getIp());
+
+						IRPCServer rpcServer = RPCServerFactory.createSliceServer();
+						rpcServer.setPort(port);
+						rpcServer.setServices(avaliableService);
+						rpcServer.start();
 						cdAnswer.countDown();
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -155,31 +180,6 @@ public class SingletonServer extends AbstractServer {
 		}
 	}
 
-	/**
-	 * merge services
-	 * 
-	 * @param app
-	 * @param context
-	 */
-	void mergeService(App app, ApplicationContext context) {
-		Map<String, Object> objects = context.getBeansWithAnnotation(MaoMaoService.class);
-		Collection<Object> services = objects.values();
-		Collection<Object> avaliableService = new ArrayList<Object>();
-		try {
-			if (null != services) {
-				for (Object o : services) {
-					if (o.getClass().getName().startsWith(app.getPk())) {
-						continue;
-					}
-					avaliableService.add(o);
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		avaliableServices.addAll(objects.values());
-	}
-
 	@Override
 	public void stop() {
 		System.exit(1);
@@ -194,7 +194,6 @@ public class SingletonServer extends AbstractServer {
 	public String getIp() {
 		return serverConfiguration.getRpc().getIp();
 	}
-
 
 	public String getServerConfig() {
 		return serverConfig;
@@ -241,4 +240,61 @@ public class SingletonServer extends AbstractServer {
 		this.appManager = appManager;
 	}
 
+	/**
+	 * get avaliable port
+	 * 
+	 * @return
+	 */
+	public int getAvaliablePort() {
+		int avaliablePort = -1;
+		int portStart = serverConfiguration.getRpc().getPort();
+		portStart++;
+
+		for (int i = portStart; i < 65535; i++) {
+			ServerSocket ss = null;
+			try {
+				ss = new ServerSocket(i);
+				avaliablePort = i;
+				break;
+			} catch (IOException e) {
+			} finally {
+				try {
+					if (ss != null) {
+						ss.close();
+					}
+				} catch (Exception e) {
+				}
+			}
+		}
+		return avaliablePort;
+	}
+
+	/**
+	 * load app libraries
+	 * 
+	 * @return
+	 */
+	URL[] loadAppLibUrls(App app) throws Exception {
+		final List<URL> urls = new ArrayList<URL>();
+		File appFolder = new File(app.getDocBase());
+		File libFolder = new File(appFolder, "lib");
+		urls.add(appFolder.toURI().toURL());
+
+		libFolder.listFiles(new FileFilter() {
+			@Override
+			public boolean accept(File file) {
+				if (file.getName().endsWith(".jar")) {
+					try {
+						urls.add(file.toURI().toURL());
+					} catch (Exception e) {
+						logger.error("Error:" , e);
+					}
+				}
+				return false;
+			}
+		});
+
+		return urls.toArray(new URL[0]);
+
+	}
 }

@@ -15,6 +15,8 @@ package com.maomao.framework.datasource;
 
 import org.hibernate.EmptyInterceptor;
 
+import com.maomao.framework.utils.encrypt.Encryption;
+
 public class Test extends EmptyInterceptor{
 	private static final long serialVersionUID = 4103862692025402062L;
 
@@ -22,5 +24,9 @@ public class Test extends EmptyInterceptor{
 	public String onPrepareStatement(String sql) {
 		//System.out.println(sql); //TODO 1
 		return super.onPrepareStatement(sql);
+	}
+	
+	public static void main(String [] args) {
+		System.out.println(Encryption.encodeMD5("12345678"));
 	}
 }

@@ -14,5 +14,5 @@ Maomaoframework is a distributed, high performance service based java framework,
 You can download the latest server environment from https://github.com/maomaoframework/maomaoframework/releases.
 
 # Documentation
-Here is maomaoframework https://github.com/maomaoframework/maomaoframework/wikiDocumentation
+Here is maomaoframework https://github.com/maomaoframework/maomaoframework/wiki
 
